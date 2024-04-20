@@ -9,9 +9,11 @@
         Title="Gestion du Matériel (Window)" 
         Height="450" 
         Width="800"
+        FontSize="14"
+        FontFamily="Roboto"
         SnapsToDevicePixels="True">
     
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="True" Margin="5 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="210" />
             <ColumnDefinition Width="*"/>
@@ -25,7 +27,7 @@
 
             <TextBlock Grid.Row="0" Text="Cosider Canalisation GM" />
 
-            <StackPanel Grid.Row="1" Margin="5 0">
+            <StackPanel Grid.Row="1">
                 <Button Content="Documents" Margin="0 0 0 5" />
                 <Button Content="Véhicules" Margin="0 0 0 5"  />
                 <Button Content="Chauffeurs" Margin="0 0 0 5"  />
@@ -33,7 +35,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Margin="5 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="59" />
                 <RowDefinition Height="*" />
@@ -45,7 +47,7 @@
             </StackPanel>
             
             <Grid Grid.Row="1">
-                <views:DriversView />
+                <views:DocumentsView />
             </Grid>
         </Grid>
     </Grid>
