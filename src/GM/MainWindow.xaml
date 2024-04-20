@@ -4,9 +4,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GM"
+        xmlns:views="clr-namespace:GM.Views"
         mc:Ignorable="d"
-        Title="GM" Height="450" Width="800">
-    <Grid>
+        Title="Gestion du Matériel (Window)" 
+        Height="450" 
+        Width="800"
+        SnapsToDevicePixels="True">
+    
+    <Grid ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="210" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="79"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Cosider Canalisation GM" />
+
+            <StackPanel Grid.Row="1" Margin="5 0">
+                <Button Content="Documents" Margin="0 0 0 5" />
+                <Button Content="Véhicules" Margin="0 0 0 5"  />
+                <Button Content="Chauffeurs" Margin="0 0 0 5"  />
+                <Button Content="Affectations" Margin="0 0 0 5"  />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="59" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+
+                <TextBlock Height="59" Text="username + profile settings"/>
+            </StackPanel>
+            
+            <Grid Grid.Row="1">
+                <views:DriversView />
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
