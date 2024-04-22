@@ -55,7 +55,7 @@
             </StackPanel>
             
             <StackPanel Grid.Row="1">
-                <dv:CreateDocumentView />
+                <dv:DocumentListView />
             </StackPanel>
         </Grid>
     </Grid>

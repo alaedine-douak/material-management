@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" 
-                       FontSize="14" 
+                       FontSize="16" 
                        FontWeight="Bold" 
                        Text="Insérer des informations pour le document" 
                        Margin="0 0 0 15"
@@ -139,7 +139,7 @@
 
             
             <TextBlock Grid.Row="0" 
-                       FontSize="14" 
+                       FontSize="16" 
                        FontWeight="Bold" 
                        Text="Insérer un nouveau nom de document" 
                        Margin="0 0 0 15"
