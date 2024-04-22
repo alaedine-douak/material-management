@@ -9,7 +9,7 @@
              d:DesignWidth="800"
              Background="White">
     
-    <Grid ShowGridLines="True" Margin="25 0">
+    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -33,33 +33,22 @@
             <Button Grid.Column="1"
                     Height="25"
                     Width="149"
-                    Content="Ajouter un document"/>
+                    Content="Ajouter un document"
+                    Command="{Binding AddDocumentCommand}"/>
 
         </Grid>
         
         <!--#region Document list-->
-        <ListView Grid.Row="1" >
-            <ListViewItem />
-            <ListViewItem />
-            <ListViewItem />
-            <ListViewItem />
-            <ListViewItem />
-            <ListViewItem />
+        <ListView Grid.Row="1" 
+                  ItemsSource="{Binding Documents}">
             
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="#">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="1"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
+                    
                     <GridViewColumn Header="Document No">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="1123"/>
+                                <TextBlock Text="{Binding DocumentNumber}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -67,7 +56,7 @@
                     <GridViewColumn Header="Document Name">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="Document 01"/>
+                                <TextBlock Text="{Binding DocumentName}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -75,7 +64,7 @@
                     <GridViewColumn Header="Issued Date">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="23/04/2024"/>
+                                <TextBlock Text="{Binding IssuedDate}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -83,7 +72,7 @@
                     <GridViewColumn Header="Expired Date">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="25/04/2024"/>
+                                <TextBlock Text="{Binding EndDate}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
