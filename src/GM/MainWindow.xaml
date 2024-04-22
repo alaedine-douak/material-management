@@ -47,7 +47,7 @@
             </StackPanel>
             
             <Grid Grid.Row="1">
-                <views:DocumentsView />
+                <views:DocumentView />
             </Grid>
         </Grid>
     </Grid>
