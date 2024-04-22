@@ -1,7 +1,9 @@
-﻿using GM.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using GM.Models;
+using GM.Exceptions;
+using GM.ViewModels;
 using System.Windows;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GM;
 
@@ -11,7 +13,8 @@ public partial class App : Application
 
     public App()
     {
-        _host = Host.CreateDefaultBuilder()
+        _host = Host
+            .CreateDefaultBuilder()
             .ConfigureServices(service =>
             {
 
@@ -27,6 +30,32 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        User user = new("Alaedine");
+        Document d1 = new("D1");
+        DocumentInfo docInfo = new(d1, "342", DateTime.Now, DateTime.Now);
+        DocumentInfo docInfo2 = new(d1, "341", DateTime.Now, DateTime.Now);
+        DocumentInfo docInfo3 = new(d1, "34a", DateTime.Now, DateTime.Now);
+        Vehicle vcl = new("E0302722", "019600.314.16", "Nissan", "PICK-UP");
+
+        try
+        {
+            user.AddDocument(d1);
+            user.AddDocumentInfo(docInfo);
+
+            user.AddVehicle(vcl);
+            vcl.AddDocumentInfo(docInfo);
+            vcl.AddDocumentInfo(docInfo2);
+            vcl.AddDocumentInfo(docInfo3);
+
+
+
+        }
+        catch (DocumentException) { }
+        catch (DocumentInfoException) { }
+        catch (VehicleException) { }
+
+        IEnumerable<Vehicle> vcls = user.GetAllVehicles();
+
         _host.Start();
 
         MainWindow = _host.Services.GetRequiredService<MainWindow>();    

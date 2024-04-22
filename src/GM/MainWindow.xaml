@@ -4,40 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GM"
-        xmlns:views="clr-namespace:GM.Views"
+        xmlns:vs="clr-namespace:GM.Views" 
+        xmlns:dv="clr-namespace:GM.Views.Document"
         mc:Ignorable="d"
         Title="Gestion du Matériel (Window)" 
         Height="450" 
         Width="800"
         FontSize="14"
         FontFamily="Roboto"
+        MinHeight="475"
+        MinWidth="920"
         SnapsToDevicePixels="True">
     
-    <Grid ShowGridLines="True" Margin="5 5">
+    <Grid Margin="5 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="210" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        
+        <!--#region Sidebar-->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="79"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0" Text="Cosider Canalisation GM" />
-
+            
+            <TextBlock Grid.Row="0" 
+                       Text="Cosider Canalisation GM" />
+            
+            <!--#region Sidebar navigation menu-->
             <StackPanel Grid.Row="1">
-                <Button Content="Documents" Margin="0 0 0 5" />
-                <Button Content="Véhicules" Margin="0 0 0 5"  />
-                <Button Content="Chauffeurs" Margin="0 0 0 5"  />
-                <Button Content="Affectations" Margin="0 0 0 5"  />
+                <Button Content="Documents" Margin="0 5"/>
+                <Button Content="Véhicules" Margin="0 5"/>
+                <Button Content="Chauffeurs" Margin="0 5"/>
+                <Button Content="Affectations" Margin="0 5"/>
             </StackPanel>
+            <!--#endregion-->
         </Grid>
+        <!--#endregion-->
 
         <Grid Grid.Column="1" Margin="5 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="59" />
+                <RowDefinition Height="39" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -46,9 +54,9 @@
                 <TextBlock Height="59" Text="username + profile settings"/>
             </StackPanel>
             
-            <Grid Grid.Row="1">
-                <views:DocumentView />
-            </Grid>
+            <StackPanel Grid.Row="1">
+                <dv:CreateDocumentView />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
