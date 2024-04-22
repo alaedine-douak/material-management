@@ -9,6 +9,6 @@
              d:DesignWidth="800"
              Background="White">
     <Grid>
-            
+        <TextBlock Text="Vehicles View" />
     </Grid>
 </UserControl>
