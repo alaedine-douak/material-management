@@ -46,12 +46,9 @@
                           Width="319" 
                           Height="25" 
                           Padding="10 5 0 3"
-                          HorizontalAlignment="Left">
-                    <ComboBoxItem Content="--- sélectionner le nom du document ---" IsSelected="True"/>
-                    <ComboBoxItem Content="Document No: 01"/>
-                    <ComboBoxItem Content="Document No: 02"/>
-                    <ComboBoxItem Content="Document No: 03"/>
-                </ComboBox>
+                          ItemsSource="{Binding Documents}"
+                          SelectedItem="{Binding SelectedDocumentName, UpdateSourceTrigger=PropertyChanged}"
+                          HorizontalAlignment="Left"/>
             </Grid>
 
             <Grid Grid.Row="2" 
@@ -69,7 +66,7 @@
                          Width="319" 
                          Height="25" 
                          HorizontalAlignment="Left" 
-                         Text="{Binding DocumentNumber}"
+                         Text="{Binding DocumentNumber, UpdateSourceTrigger=PropertyChanged}"
                          Padding="3 3 0 3"/>
             </Grid>
 
@@ -91,6 +88,7 @@
                 
                 <DatePicker Grid.Row="1" 
                             Grid.Column="0"
+                            SelectedDate="{Binding IssuedDate, UpdateSourceTrigger=PropertyChanged}"
                             Margin="0 0 7 0"
                             Width="152"/>
 
@@ -101,6 +99,7 @@
                 
                 <DatePicker Grid.Row="1" 
                             Grid.Column="1" 
+                            SelectedDate="{Binding EndDate,UpdateSourceTrigger=PropertyChanged}"
                             Margin="7 0 0 0"
                             Width="152"/>
             </Grid>
@@ -163,7 +162,7 @@
                          Height="25" 
                          Width="219" 
                          HorizontalAlignment="Left" 
-                         Text=""
+                         Text="{Binding DocumentName, UpdateSourceTrigger=PropertyChanged}"
                          Padding="3 3 0 3"/>
             </Grid>
 
@@ -171,7 +170,8 @@
                     Content="Submit"
                     Width="69"
                     Height="25"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left"
+                    Command="{Binding SubmitNewDocumentNameCommand}"/>
         </Grid>
         <!--#endregion-->
     </Grid>

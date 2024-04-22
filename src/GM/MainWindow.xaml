@@ -13,7 +13,7 @@
         FontSize="14"
         FontFamily="Roboto"
         MinHeight="475"
-        MinWidth="920"
+        MinWidth="1020"
         SnapsToDevicePixels="True">
     
     <Grid>

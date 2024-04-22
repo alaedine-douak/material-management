@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace GM.ViewModels.Document;
 
@@ -15,7 +16,7 @@ public class AddDocumentViewModel : ViewModelBase
         }
     }
 
-    private DateTime _issuedDate;
+    private DateTime _issuedDate = DateTime.Now;
     public DateTime IssuedDate
     {
         get => _issuedDate;
@@ -26,7 +27,7 @@ public class AddDocumentViewModel : ViewModelBase
         }
     }
 
-    private DateTime _endDate;
+    private DateTime _endDate = DateTime.Now;
     public DateTime EndDate
     {
         get => _endDate;
@@ -37,13 +38,46 @@ public class AddDocumentViewModel : ViewModelBase
         }
     }
 
+    private string _documentName = "";
+    public string DocumentName
+    {
+        get => _documentName;
+        set
+        {
+            _documentName = value;
+            OnPropertyChanged(nameof(DocumentName));
+        }
+    }
+
+    private string _selectedDocumentName = "";
+    public string SelectedDocumentName
+    {
+        get => _selectedDocumentName;
+        set
+        {
+            _selectedDocumentName = value;
+            OnPropertyChanged(nameof(SelectedDocumentName));
+        }
+    }
+    
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
+    public ICommand SubmitNewDocumentNameCommand { get; }
+    //public ICommand DocumentNameSelectionChangedCommand { get; }
+
+    private readonly ObservableCollection<string> _documents;
+    public IEnumerable<string> Documents => _documents;
+
 
     public AddDocumentViewModel()
     {
-        SubmitCommand = null!; 
+        _documents = new ObservableCollection<string> {"D1", "D2", "D3", "D4" };
+
+
+        SubmitCommand = null!;
         CancelCommand = null!;
+        SubmitNewDocumentNameCommand = null!;
+        //DocumentNameSelectionChangedCommand = null!;
     }
 
 }
