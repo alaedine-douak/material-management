@@ -38,6 +38,11 @@ public class User
         _documents.Add(document);
     }
 
+    public IEnumerable<DocumentDetail> GetAllDocumentDetails()
+    {
+        return _docDetails;
+    }
+
     internal void AddDocumentDetail(DocumentDetail docDetail)
     {
         _docDetails.Add(docDetail);

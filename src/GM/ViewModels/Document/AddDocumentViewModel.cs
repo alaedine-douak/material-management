@@ -3,6 +3,7 @@ using GM.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using GM.Stores;
+using GM.Services;
 
 namespace GM.ViewModels.Document;
 
@@ -73,15 +74,14 @@ public class AddDocumentViewModel : ViewModelBase
 
 
     public AddDocumentViewModel(
-        User user, 
-        NavigationStore navigationStore,
-        Func<DocumentListViewModel> documentListViewModel)
+        User user,
+        NavigationService navigationService)
     {
         _documents = new ObservableCollection<string> {"D1", "D2", "D3", "D4" };
 
 
-        SubmitCommand = new SubmitDocumentDetailCommand(this, user);
-        CancelCommand = new NavigateCommand(navigationStore, documentListViewModel);
+        SubmitCommand = new SubmitDocumentDetailCommand(this, user, navigationService);
+        CancelCommand = new NavigateCommand(navigationService);
         SubmitNewDocumentNameCommand = null!;
         //DocumentNameSelectionChangedCommand = null!;
     }

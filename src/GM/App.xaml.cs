@@ -1,8 +1,10 @@
 ﻿using GM.Models;
 using GM.Stores;
+using GM.Services;
 using GM.ViewModels;
-using GM.ViewModels.Document;
 using System.Windows;
+using GM.ViewModels.Document;
+
 
 namespace GM;
 
@@ -77,15 +79,18 @@ public partial class App : Application
         base.OnStartup(e);
     }
 
-    private AddDocumentViewModel createAddDocumentViewModel()
+    private AddDocumentViewModel CreateAddDocumentViewModel()
         => new AddDocumentViewModel(
             _user,
-            _navigationStore,
-            CreateDocumentListViewModel);
+            new NavigationService(
+                _navigationStore,
+                CreateDocumentListViewModel));
 
     private DocumentListViewModel CreateDocumentListViewModel()
         => new DocumentListViewModel(
-            _navigationStore,
-            createAddDocumentViewModel);
+            _user, 
+            new NavigationService(
+                _navigationStore, 
+                CreateAddDocumentViewModel));
 }
 

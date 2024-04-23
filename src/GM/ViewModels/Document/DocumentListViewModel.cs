@@ -2,29 +2,40 @@
 using GM.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using GM.Services;
+using GM.Models;
 
 
 namespace GM.ViewModels.Document;
 
 public class DocumentListViewModel : ViewModelBase
 {
+    private readonly User _user;
+
     private readonly ObservableCollection<DocumentViewModel> _documents;
     public IEnumerable<DocumentViewModel> Documents => _documents;
     public ICommand AddDocumentCommand { get; }
 
-    public DocumentListViewModel(
-        NavigationStore navigationStore, 
-        Func<AddDocumentViewModel> addDocumentViewModel)
+    public DocumentListViewModel(User user, NavigationService navigationService)
     {
-        _documents = new ObservableCollection<DocumentViewModel>
-        {
-            new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D1"), "3873", DateTime.Now, DateTime.Now)),
-            new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D2"), "3874", DateTime.Now, DateTime.Now)),
-            new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D3"), "3875", DateTime.Now, DateTime.Now)),
-            new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D4"), "3876", DateTime.Now, DateTime.Now)),
-            new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D5"), "3877", DateTime.Now, DateTime.Now)),
-        };
+        _user = user;
+        _documents = new ObservableCollection<DocumentViewModel>();
 
-        AddDocumentCommand = new NavigateCommand(navigationStore, addDocumentViewModel);
+        AddDocumentCommand = new NavigateCommand(navigationService);
+
+        UpdateDocuments();
+    }
+
+
+    private void UpdateDocuments()
+    {
+        _documents.Clear();
+
+        foreach (DocumentDetail document in _user.GetAllDocumentDetails())
+        {
+            DocumentViewModel vm = new(document);
+
+            _documents.Add(vm);
+        }
     }
 }

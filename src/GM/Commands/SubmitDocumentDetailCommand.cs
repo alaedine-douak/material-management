@@ -1,4 +1,5 @@
 ﻿using GM.Models;
+using GM.Services;
 using GM.ViewModels.Document;
 using System.ComponentModel;
 using System.Windows;
@@ -9,10 +10,15 @@ public class SubmitDocumentDetailCommand : CommandBase
 {
     private readonly AddDocumentViewModel _vm;
     private readonly User _user;
-    public SubmitDocumentDetailCommand(AddDocumentViewModel vm, User user)
+    private readonly NavigationService _navigationService;
+    public SubmitDocumentDetailCommand(
+        AddDocumentViewModel vm, 
+        User user, 
+        NavigationService navigationService)
     {
         _vm = vm;
         _user = user;
+        _navigationService = navigationService;
 
         _vm.PropertyChanged += OnViewModelPropertyChanged;
     }
@@ -41,6 +47,8 @@ public class SubmitDocumentDetailCommand : CommandBase
                 "Document created",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+
+            _navigationService.Navigate();
         }
         catch (Exception)
         {
