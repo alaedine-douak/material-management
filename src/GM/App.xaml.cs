@@ -1,4 +1,5 @@
-﻿using GM.ViewModels;
+﻿using GM.Models;
+using GM.ViewModels;
 using System.Windows;
 
 namespace GM;
@@ -6,9 +7,12 @@ namespace GM;
 public partial class App : Application
 {
     //private readonly IHost _host;
+    private readonly User _user;
 
     public App()
     {
+        _user = new User("Alaedine");
+
         //_host = Host
         //    .CreateDefaultBuilder()
         //    .ConfigureServices(service =>
@@ -59,7 +63,7 @@ public partial class App : Application
 
         MainWindow = new MainWindow
         {
-            DataContext = new MainViewModel()
+            DataContext = new MainViewModel(_user)
         };
 
         MainWindow.Show();

@@ -9,7 +9,7 @@ public class Vehicle
     public string Brand { get; }
     public string Model { get; }
 
-    private readonly List<DocumentInfo> _docInfos;
+    private readonly List<DocumentDetail> _docInfos;
 
     public Vehicle(string code, string vehicleCode, string brand, string model)
     {
@@ -18,12 +18,12 @@ public class Vehicle
         Brand = brand;
         Model = model;
 
-        _docInfos = new List<DocumentInfo>();
+        _docInfos = new List<DocumentDetail>();
     }
 
-    public IEnumerable<DocumentInfo> GetAllDocumentInfos() => _docInfos;
+    public IEnumerable<DocumentDetail> GetAllDocumentInfos() => _docInfos;
 
-    public void AddDocumentInfo(DocumentInfo doctInfo) => _docInfos.Add(doctInfo);
+    public void AddDocumentInfo(DocumentDetail doctInfo) => _docInfos.Add(doctInfo);
 
     public bool ConflictVehicleCode(Vehicle vehicle)
     {

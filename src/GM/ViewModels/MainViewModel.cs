@@ -1,4 +1,5 @@
-﻿using GM.ViewModels.Document;
+﻿using GM.Models;
+using GM.ViewModels.Document;
 
 namespace GM.ViewModels;
 
@@ -6,8 +7,8 @@ public class MainViewModel : ViewModelBase
 {
     public ViewModelBase CurrentViewModel { get; }
 
-    public MainViewModel()
+    public MainViewModel(User user)
     {
-        CurrentViewModel = new DocumentListViewModel();
+        CurrentViewModel = new AddDocumentViewModel(user);
     }
 }

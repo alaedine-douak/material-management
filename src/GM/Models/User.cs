@@ -8,7 +8,7 @@ public class User
 
     private readonly List<Vehicle> _vehicles;
     private readonly List<Document> _documents;
-    private readonly List<DocumentInfo> _docInfos;
+    private readonly List<DocumentDetail> _docDetails;
 
     public User(string username)
     {
@@ -16,7 +16,7 @@ public class User
 
         _vehicles = new List<Vehicle>();
         _documents = new List<Document>();
-        _docInfos = new List<DocumentInfo>();
+        _docDetails = new List<DocumentDetail>();
     }
 
 
@@ -38,16 +38,15 @@ public class User
         _documents.Add(document);
     }
 
-    internal void AddDocumentInfo(DocumentInfo docInfo)
+    internal void AddDocumentDetail(DocumentDetail docDetail)
     {
-        _docInfos.Add(docInfo);
+        _docDetails.Add(docDetail);
     }
 
     public IEnumerable<Vehicle> GetAllVehicles()
     {
         return _vehicles;
     }
-
 
     public void AddVehicle(Vehicle vehicle)
     {

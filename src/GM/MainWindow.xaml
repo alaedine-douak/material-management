@@ -55,7 +55,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1">
-                <dv:DocumentListView DataContext="{Binding CurrentViewModel}"/>
+                <dv:AddDocumentView DataContext="{Binding CurrentViewModel}"/>
             </StackPanel>
         </Grid>
     </Grid>

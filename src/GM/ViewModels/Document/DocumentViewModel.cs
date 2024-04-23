@@ -6,13 +6,13 @@ public class DocumentViewModel : ViewModelBase
 {
     public string DocumentNumber => _docInfo.DocumentNumber;
     public string DocumentName => _docInfo.Document.Name;
-    public DateTime IssuedDate => _docInfo.IssuedDate;
-    public DateTime EndDate => _docInfo.EndDate;
+    public string IssuedDate => _docInfo.IssuedDate.ToString("d"); // TODO: modify datetime to string type and use .tostring("d") to format only date
+    public string EndDate => _docInfo.EndDate.ToString("d");
     
 
-    private readonly DocumentInfo _docInfo;
+    private readonly DocumentDetail _docInfo;
 
-    public DocumentViewModel(DocumentInfo docInfo)
+    public DocumentViewModel(DocumentDetail docInfo)
     {
         _docInfo = docInfo;
     }

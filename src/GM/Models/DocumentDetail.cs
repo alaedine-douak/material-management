@@ -1,6 +1,6 @@
 ﻿namespace GM.Models;
 
-public class DocumentInfo
+public class DocumentDetail
 {
     public Document Document { get; }
     public string DocumentNumber { get; }
@@ -8,7 +8,7 @@ public class DocumentInfo
     public DateTime IssuedDate { get; }
 
 
-    public DocumentInfo(
+    public DocumentDetail(
         Document document,
         string documentNumber, 
         DateTime issuedDate, 
@@ -20,13 +20,13 @@ public class DocumentInfo
         EndDate = endDate;
     }
 
-    public bool ConflictDocumentNumber(DocumentInfo documentInfo)
-    {
-        if (documentInfo.DocumentNumber != DocumentNumber)
-        {
-            return false;
-        }
+    //public bool ConflictDocumentNumber(DocumentInfo documentInfo)
+    //{
+    //    if (documentInfo.DocumentNumber != DocumentNumber)
+    //    {
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 }
