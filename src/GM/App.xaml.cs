@@ -1,5 +1,7 @@
 ﻿using GM.Models;
+using GM.Stores;
 using GM.ViewModels;
+using GM.ViewModels.Document;
 using System.Windows;
 
 namespace GM;
@@ -8,10 +10,12 @@ public partial class App : Application
 {
     //private readonly IHost _host;
     private readonly User _user;
+    private readonly NavigationStore _navigationStore;
 
     public App()
     {
         _user = new User("Alaedine");
+        _navigationStore = new NavigationStore();
 
         //_host = Host
         //    .CreateDefaultBuilder()
@@ -61,9 +65,11 @@ public partial class App : Application
         //MainWindow = _host.Services.GetRequiredService<MainWindow>();    
         //MainWindow.Show();
 
+        _navigationStore.CurrentViewModel = new DocumentListViewModel(_navigationStore);
+
         MainWindow = new MainWindow
         {
-            DataContext = new MainViewModel(_user)
+            DataContext = new MainViewModel(_navigationStore)
         };
 
         MainWindow.Show();

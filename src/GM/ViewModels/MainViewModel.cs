@@ -1,14 +1,21 @@
 ﻿using GM.Models;
-using GM.ViewModels.Document;
+using GM.Stores;
 
 namespace GM.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public ViewModelBase CurrentViewModel { get; }
+    private readonly NavigationStore _navigationStore;
+    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
-    public MainViewModel(User user)
+    public MainViewModel(NavigationStore navigationStore)
     {
-        CurrentViewModel = new AddDocumentViewModel(user);
+        _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+    }
+
+    private void OnCurrentViewModelChanged()
+    {
+        OnPropertyChanged(nameof(CurrentViewModel));
     }
 }

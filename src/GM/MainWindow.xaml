@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GM"
         xmlns:vs="clr-namespace:GM.Views" 
-        xmlns:dv="clr-namespace:GM.Views.Document"
+        xmlns:dvs="clr-namespace:GM.Views.Document"
+        xmlns:dvms="clr-namespace:GM.ViewModels.Document"
         mc:Ignorable="d"
         Title="Gestion du Matériel (Window)" 
         Height="450" 
@@ -55,7 +56,16 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1">
-                <dv:AddDocumentView DataContext="{Binding CurrentViewModel}"/>
+                <StackPanel.Resources>
+                    <DataTemplate DataType="{x:Type dvms:AddDocumentViewModel}">
+                        <dvs:AddDocumentView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dvms:DocumentListViewModel}">
+                        <dvs:DocumentListView />
+                    </DataTemplate>
+                </StackPanel.Resources>
+
+                <ContentControl Content="{Binding CurrentViewModel}" />
             </StackPanel>
         </Grid>
     </Grid>
