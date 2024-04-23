@@ -1,6 +1,7 @@
 ﻿using GM.Models;
 using GM.ViewModels.Document;
 using System.ComponentModel;
+using System.Windows;
 
 namespace GM.Commands;
 
@@ -31,8 +32,24 @@ public class SubmitDocumentDetailCommand : CommandBase
             _vm.IssuedDate,
             _vm.IssuedDate);
 
+        try
+        {
+            _user.AddDocumentDetail(documentDetail);
 
-        _user.AddDocumentDetail(documentDetail);
+            MessageBox.Show(
+                "A new Document details have created successfully",
+                "Document created",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+        catch (Exception)
+        {
+            MessageBox.Show(
+                "Something unexpected happened, when adding Document details",
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)

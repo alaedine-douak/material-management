@@ -65,7 +65,7 @@ public partial class App : Application
         //MainWindow = _host.Services.GetRequiredService<MainWindow>();    
         //MainWindow.Show();
 
-        _navigationStore.CurrentViewModel = new DocumentListViewModel(_navigationStore);
+        _navigationStore.CurrentViewModel = CreateDocumentListViewModel();
 
         MainWindow = new MainWindow
         {
@@ -76,5 +76,16 @@ public partial class App : Application
 
         base.OnStartup(e);
     }
+
+    private AddDocumentViewModel createAddDocumentViewModel()
+        => new AddDocumentViewModel(
+            _user,
+            _navigationStore,
+            CreateDocumentListViewModel);
+
+    private DocumentListViewModel CreateDocumentListViewModel()
+        => new DocumentListViewModel(
+            _navigationStore,
+            createAddDocumentViewModel);
 }
 

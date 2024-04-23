@@ -12,7 +12,9 @@ public class DocumentListViewModel : ViewModelBase
     public IEnumerable<DocumentViewModel> Documents => _documents;
     public ICommand AddDocumentCommand { get; }
 
-    public DocumentListViewModel(NavigationStore navigationStore)
+    public DocumentListViewModel(
+        NavigationStore navigationStore, 
+        Func<AddDocumentViewModel> addDocumentViewModel)
     {
         _documents = new ObservableCollection<DocumentViewModel>
         {
@@ -23,6 +25,6 @@ public class DocumentListViewModel : ViewModelBase
             new DocumentViewModel(new Models.DocumentDetail(new Models.Document("D5"), "3877", DateTime.Now, DateTime.Now)),
         };
 
-        AddDocumentCommand = new NavigateCommand(navigationStore);
+        AddDocumentCommand = new NavigateCommand(navigationStore, addDocumentViewModel);
     }
 }
