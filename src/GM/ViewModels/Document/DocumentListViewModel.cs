@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using GM.Services;
 using GM.Models;
+using GM.Commands.Document;
 
 
 namespace GM.ViewModels.Document;
@@ -14,14 +15,19 @@ public class DocumentListViewModel : ViewModelBase
 
     private readonly ObservableCollection<DocumentViewModel> _documents;
     public IEnumerable<DocumentViewModel> Documents => _documents;
+    
+    
     public ICommand AddDocumentCommand { get; }
+    public ICommand LoadDocumentsCommand { get; }
 
-    public DocumentListViewModel(User user, NavigationService navigationService)
+
+    public DocumentListViewModel(User user, NavigationService<AddDocumentViewModel> navigationService)
     {
         _user = user;
         _documents = new ObservableCollection<DocumentViewModel>();
 
-        AddDocumentCommand = new NavigateCommand(navigationService);
+        AddDocumentCommand = new NavigateCommand<AddDocumentViewModel>(navigationService);
+        LoadDocumentsCommand = new LoadDocumentsCommand(this);
 
         UpdateDocuments();
     }

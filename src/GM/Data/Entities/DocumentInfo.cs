@@ -1,6 +1,6 @@
 ﻿namespace GM.Data.Entities;
 
-public class DocumentDetail
+public class DocumentInfo
 {
     public int Id { get; set; }
     public string DocumentNumber { get; set; } = null!;

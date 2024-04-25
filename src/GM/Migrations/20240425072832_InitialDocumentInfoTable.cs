@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDocumentDetailsTable : Migration
+    public partial class InitialDocumentInfoTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DocumentDetails",
+                name: "DocumentInfos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -25,9 +25,9 @@ namespace GM.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentDetails", x => x.Id);
+                    table.PrimaryKey("PK_DocumentInfos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocumentDetails_Documents_DocumentId",
+                        name: "FK_DocumentInfos_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
                         principalColumn: "Id",
@@ -35,8 +35,8 @@ namespace GM.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocumentDetails_DocumentId",
-                table: "DocumentDetails",
+                name: "IX_DocumentInfos_DocumentId",
+                table: "DocumentInfos",
                 column: "DocumentId");
         }
 
@@ -44,7 +44,7 @@ namespace GM.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DocumentDetails");
+                name: "DocumentInfos");
         }
     }
 }

@@ -7,7 +7,7 @@ public class GMDbContext : DbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Document> Documents => Set<Document>();
-    public DbSet<DocumentDetail> DocumentDetails => Set<DocumentDetail>(); 
+    public DbSet<DocumentInfo> DocumentInfos => Set<DocumentInfo>();
 
     public GMDbContext(DbContextOptions<GMDbContext> options) : base(options)
     {

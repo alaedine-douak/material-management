@@ -1,96 +1,72 @@
-﻿using GM.Models;
+﻿using GM.Data;
+using GM.Models;
 using GM.Stores;
 using GM.Services;
 using GM.ViewModels;
+using GM.Extensions;
 using System.Windows;
-using GM.ViewModels.Document;
-
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GM;
 
 public partial class App : Application
 {
-    //private readonly IHost _host;
-    private readonly User _user;
-    private readonly NavigationStore _navigationStore;
-
-    public App()
-    {
-        _user = new User("Alaedine");
-        _navigationStore = new NavigationStore();
-
-        //_host = Host
-        //    .CreateDefaultBuilder()
-        //    .ConfigureServices(service =>
-        //    {
-
-        //        service.AddTransient<MainWindowViewModel>();
-
-        //        service.AddSingleton(s => new MainWindow
-        //        {
-        //            DataContext = s.GetRequiredService<MainWindowViewModel>()
-        //        });
-        //    })
-        //    .Build();
-    }
+    private readonly IHost _host;
+    public App() => _host = CreateHostBuilder().Build();
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        //User user = new("Alaedine");
-        //Document d1 = new("D1");
-        //DocumentInfo docInfo = new(d1, "342", DateTime.Now, DateTime.Now);
-        //DocumentInfo docInfo2 = new(d1, "341", DateTime.Now, DateTime.Now);
-        //DocumentInfo docInfo3 = new(d1, "34a", DateTime.Now, DateTime.Now);
-        //Vehicle vcl = new("E0302722", "019600.314.16", "Nissan", "PICK-UP");
+        _host.Start();
 
-        //try
+        //using (var serviceScope = _host.Services.CreateScope())
         //{
-        //    user.AddDocument(d1);
-        //    user.AddDocumentInfo(docInfo);
-
-        //    user.AddVehicle(vcl);
-        //    vcl.AddDocumentInfo(docInfo);
-        //    vcl.AddDocumentInfo(docInfo2);
-        //    vcl.AddDocumentInfo(docInfo3);
-
-
-
+        //    var context = serviceScope.ServiceProvider.GetRequiredService<GMDbContext>();
+        //    context.Database.Migrate();
         //}
-        //catch (DocumentException) { }
-        //catch (DocumentInfoException) { }
-        //catch (VehicleException) { }
 
-        //IEnumerable<Vehicle> vcls = user.GetAllVehicles();
 
-        //_host.Start();
+        var navigationService = _host.Services.GetRequiredService<NavigationService<HomeViewModel>>();
+        navigationService.Navigate();
 
-        //MainWindow = _host.Services.GetRequiredService<MainWindow>();    
-        //MainWindow.Show();
-
-        _navigationStore.CurrentViewModel = CreateDocumentListViewModel();
-
-        MainWindow = new MainWindow
-        {
-            DataContext = new MainViewModel(_navigationStore)
-        };
-
+        MainWindow = _host.Services.GetRequiredService<MainWindow>();
         MainWindow.Show();
 
         base.OnStartup(e);
     }
 
-    private AddDocumentViewModel CreateAddDocumentViewModel()
-        => new AddDocumentViewModel(
-            _user,
-            new NavigationService(
-                _navigationStore,
-                CreateDocumentListViewModel));
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _host.Dispose();
 
-    private DocumentListViewModel CreateDocumentListViewModel()
-        => new DocumentListViewModel(
-            _user, 
-            new NavigationService(
-                _navigationStore, 
-                CreateAddDocumentViewModel));
+        base.OnExit(e);
+    }
+
+    private static IHostBuilder CreateHostBuilder()
+        => Host
+            .CreateDefaultBuilder()
+            .AddViewModels()
+            .ConfigureServices((hostContext, services) =>
+            {
+                var connectionString = hostContext.Configuration.GetConnectionString("GMConnectionString");
+
+                services.AddDbContext<GMDbContext>(options =>
+                {
+                    options.UseNpgsql(connectionString);
+                    options.UseLazyLoadingProxies();
+                });
+
+                services.AddSingleton<NavigationStore>();
+
+                services.AddSingleton(s => new User("gmadmin"));
+
+
+                services.AddSingleton(s => new MainWindow
+                {
+                    DataContext = s.GetRequiredService<MainWindowViewModel>()
+                });
+            });
 }
 

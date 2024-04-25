@@ -10,5 +10,5 @@ public class Document
     public virtual User User { get; set; } = null!;
 
 
-    public virtual ICollection<DocumentDetail> DocumentDetails { get; set; } = null!;
+    public virtual ICollection<DocumentInfo> DocumentInfos { get; set; } = null!;
 }

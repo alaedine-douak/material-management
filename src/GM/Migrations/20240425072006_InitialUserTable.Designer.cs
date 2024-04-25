@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    [Migration("20240424131531_InitialDocumentTable")]
-    partial class InitialDocumentTable
+    [Migration("20240425072006_InitialUserTable")]
+    partial class InitialUserTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,28 +26,6 @@ namespace GM.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("GM.Data.Entities.Document", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Documents");
-                });
 
             modelBuilder.Entity("GM.Data.Entities.User", b =>
                 {
@@ -64,22 +42,6 @@ namespace GM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("GM.Data.Entities.Document", b =>
-                {
-                    b.HasOne("GM.Data.Entities.User", "User")
-                        .WithMany("Document")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GM.Data.Entities.User", b =>
-                {
-                    b.Navigation("Document");
                 });
 #pragma warning restore 612, 618
         }

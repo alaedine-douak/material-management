@@ -10,11 +10,11 @@ public class SubmitDocumentDetailCommand : CommandBase
 {
     private readonly AddDocumentViewModel _vm;
     private readonly User _user;
-    private readonly NavigationService _navigationService;
+    private readonly NavigationService<DocumentListViewModel> _navigationService;
     public SubmitDocumentDetailCommand(
         AddDocumentViewModel vm, 
         User user, 
-        NavigationService navigationService)
+        NavigationService<DocumentListViewModel> navigationService)
     {
         _vm = vm;
         _user = user;
@@ -33,7 +33,7 @@ public class SubmitDocumentDetailCommand : CommandBase
     public override void Execute(object? parameter)
     {
         DocumentDetail documentDetail = new(
-            new Document(_vm.SelectedDocumentName),
+            new GM.Models.Document(_vm.SelectedDocumentName),
             _vm.DocumentNumber,
             _vm.IssuedDate,
             _vm.IssuedDate);

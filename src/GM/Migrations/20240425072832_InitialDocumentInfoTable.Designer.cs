@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    [Migration("20240424133239_InitialDocumentDetailsTable")]
-    partial class InitialDocumentDetailsTable
+    [Migration("20240425072832_InitialDocumentInfoTable")]
+    partial class InitialDocumentInfoTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace GM.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("GM.Data.Entities.DocumentDetail", b =>
+            modelBuilder.Entity("GM.Data.Entities.DocumentInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace GM.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("DocumentDetails");
+                    b.ToTable("DocumentInfos");
                 });
 
             modelBuilder.Entity("GM.Data.Entities.User", b =>
@@ -106,20 +106,15 @@ namespace GM.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GM.Data.Entities.DocumentDetail", b =>
+            modelBuilder.Entity("GM.Data.Entities.DocumentInfo", b =>
                 {
                     b.HasOne("GM.Data.Entities.Document", "Document")
-                        .WithMany("DocumentDetails")
+                        .WithMany()
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Document");
-                });
-
-            modelBuilder.Entity("GM.Data.Entities.Document", b =>
-                {
-                    b.Navigation("DocumentDetails");
                 });
 
             modelBuilder.Entity("GM.Data.Entities.User", b =>
