@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <Folder Include="Fonts\" />
+        <Folder Include="Converters\" />
         <Folder Include="Views\DocumentInfo\" />
     </ItemGroup>
 
@@ -21,6 +22,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.4" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     </ItemGroup>
 

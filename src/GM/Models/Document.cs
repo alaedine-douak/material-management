@@ -1,10 +1,8 @@
 ﻿namespace GM.Models;
 
-public class Document
+public class Document(string name)
 {
-    public string Name { get; }
-
-    public Document(string name) => Name = name;
+    public string Name { get; } = name;
 
     public bool ConflictDocumentName(Document document)
     {

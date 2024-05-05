@@ -3,6 +3,7 @@ using System;
 using GM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    partial class GMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429212033_AlterDocumentInfoDatesTypes")]
+    partial class AlterDocumentInfoDatesTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,43 +92,6 @@ namespace GM.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GM.Data.Entities.Vehicle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlateNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("Code", "PlateNumber")
-                        .IsUnique();
-
-                    b.ToTable("Vehicles");
-                });
-
             modelBuilder.Entity("GM.Data.Entities.Document", b =>
                 {
                     b.HasOne("GM.Data.Entities.User", "User")
@@ -146,17 +112,6 @@ namespace GM.Migrations
                         .IsRequired();
 
                     b.Navigation("Document");
-                });
-
-            modelBuilder.Entity("GM.Data.Entities.Vehicle", b =>
-                {
-                    b.HasOne("GM.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GM.Data.Entities.Document", b =>

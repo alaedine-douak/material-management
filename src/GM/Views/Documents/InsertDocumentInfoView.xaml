@@ -1,0 +1,287 @@
+﻿<UserControl
+    x:Class="GM.Views.Documents.InsertDocumentInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviorTriggers="clr-namespace:GM.Behaviors"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GM.Views.Documents"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="White"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*" />
+            <ColumnDefinition Width="40*" />
+        </Grid.ColumnDefinitions>
+
+        <!--#region Insert new document details-->
+        <Grid Grid.Column="0" Margin="5,15,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,15"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Insérer des informations pour le document"
+                TextWrapping="Wrap" />
+
+            <Grid Grid.Row="1" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Text="Document Name" />
+
+                <ComboBox
+                    Grid.Row="1"
+                    Width="319"
+                    Height="25"
+                    Padding="10,5,0,3"
+                    HorizontalAlignment="Left"
+                    ItemsSource="{Binding Documents}"
+                    SelectedItem="{Binding SelectedDocument}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Text="code du véhicule" />
+
+                <ComboBox
+                    Grid.Row="1"
+                    Width="319"
+                    Height="25"
+                    Padding="10,5,0,3"
+                    HorizontalAlignment="Left"
+                    IsEditable="True"
+                    IsTextSearchEnabled="True"
+                    ItemsSource="{Binding Vehicles}"
+                    SelectedItem="{Binding SelectedVehicle}"
+                    StaysOpenOnEdit="True"
+                    Text="{Binding SearchVehicle}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Path=Code}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    Text="{Binding Path=Designation}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Margin="5,0,0,0"
+                                    Text="{Binding Path=Brand}" />
+                                <TextBlock
+                                    Grid.Column="3"
+                                    Margin="5,0,0,0"
+                                    Text="{Binding Path=PlateNumber}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                    <!--<ComboBox.ItemTemplate>
+                        <DataTemplate>
+                    -->
+                    <!--<StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Code}" />
+                                <TextBlock Text=" - " />
+                                <TextBlock Text="{Binding PlateNumber}" />
+                            </StackPanel>-->
+
+                    <!--<DataGrid ItemsSource="{Binding Vehicles}" />-->
+                    <!--
+
+                            <ListView ItemsSource="{Binding Vehicles}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=Code}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>-->
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="3" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Text="Document Number" />
+
+                <TextBox
+                    Grid.Row="1"
+                    Width="319"
+                    Height="25"
+                    Padding="3,3,0,3"
+                    HorizontalAlignment="Left"
+                    Text="{Binding DocumentNumber, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <Grid Grid.Row="4" Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="0,0,0,5"
+                    Text="Issued Date" />
+
+                <DatePicker
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Width="152"
+                    Margin="0,0,7,0"
+                    SelectedDate="{Binding IssuedDate, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="7,0,0,5"
+                    Text="Expired Date" />
+
+                <DatePicker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="152"
+                    Margin="7,0,0,0"
+                    SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <Grid Grid.Row="5" Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Column="0"
+                    Width="72"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding SubmitCommand}"
+                    Content="Submit" />
+                <Button
+                    Grid.Column="1"
+                    Width="72"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding CancelCommand}"
+                    Content="Cancel" />
+            </Grid>
+
+        </Grid>
+        <!--#endregion-->
+
+        <!--#region Insert new document name-->
+        <Grid
+            Grid.Column="1"
+            Margin="5,15,5,0"
+            HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,15"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Insérer un nouveau nom de document"
+                TextWrapping="Wrap" />
+
+            <Grid Grid.Row="1" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Text="Document Name" />
+
+
+                <TextBox
+                    Grid.Row="1"
+                    Width="219"
+                    Height="25"
+                    Padding="3,3,0,3"
+                    HorizontalAlignment="Left"
+                    Text="{Binding DocumentName, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <Button
+                Grid.Row="2"
+                Width="69"
+                Height="25"
+                HorizontalAlignment="Left"
+                Command="{Binding InsertDocumentNameCommand}"
+                Content="Submit" />
+
+            <!--<behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Click">
+                        <behaviorTriggers:ClearTextTriggerAction Target="{Binding ElementName=DocumentName}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </Button>-->
+        </Grid>
+        <!--#endregion-->
+    </Grid>
+</UserControl>
