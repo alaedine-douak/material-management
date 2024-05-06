@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviorTriggers="clr-namespace:GM.Behaviors"
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:controls="clr-namespace:GM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GM.Views.Documents"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -79,69 +80,19 @@
                     Margin="0,0,0,5"
                     Text="code du véhicule" />
 
-                <ComboBox
+                <controls:SearchComboBox
                     Grid.Row="1"
                     Width="319"
                     Height="25"
                     Padding="10,5,0,3"
                     HorizontalAlignment="Left"
+                    DisplayMemberPath="VehicleComboBoxText"
                     IsEditable="True"
-                    IsTextSearchEnabled="True"
+                    IsTextSearchEnabled="False"
                     ItemsSource="{Binding Vehicles}"
-                    SelectedItem="{Binding SelectedVehicle}"
+                    SelectedItem="{Binding SelectedVehicle, UpdateSourceTrigger=PropertyChanged}"
                     StaysOpenOnEdit="True"
-                    Text="{Binding SearchVehicle}">
-
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Code}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    Text="{Binding Path=Designation}" />
-                                <TextBlock
-                                    Grid.Column="2"
-                                    Margin="5,0,0,0"
-                                    Text="{Binding Path=Brand}" />
-                                <TextBlock
-                                    Grid.Column="3"
-                                    Margin="5,0,0,0"
-                                    Text="{Binding Path=PlateNumber}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-
-                    <!--<ComboBox.ItemTemplate>
-                        <DataTemplate>
-                    -->
-                    <!--<StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Code}" />
-                                <TextBlock Text=" - " />
-                                <TextBlock Text="{Binding PlateNumber}" />
-                            </StackPanel>-->
-
-                    <!--<DataGrid ItemsSource="{Binding Vehicles}" />-->
-                    <!--
-
-                            <ListView ItemsSource="{Binding Vehicles}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Path=Code}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>-->
-                </ComboBox>
+                    Text="{Binding SearchVehicleText, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
             <Grid Grid.Row="3" Margin="0,10">

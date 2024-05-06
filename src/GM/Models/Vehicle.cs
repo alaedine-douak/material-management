@@ -13,8 +13,6 @@ public class Vehicle(
     public string Brand { get; } = brand;
     public string PlateNumber { get; } = plateNumber;
 
-    //public override string ToString()
-    //{
-    //    return $"{Code} {Designation} {Brand} {PlateNumber}";
-    //}
+    public string VehicleComboBoxText =>
+        $"{Code} {Designation} {Brand} {PlateNumber}";
 }

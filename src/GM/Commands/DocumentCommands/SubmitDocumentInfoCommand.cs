@@ -41,7 +41,7 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
 
     public override bool CanExecute(object? parameter)
     {
-        return !string.IsNullOrEmpty(_viewModel.SelectedDocument.Name) && 
+        return !string.IsNullOrEmpty(_viewModel.SelectedDocument?.Name) && 
             !string.IsNullOrEmpty(_viewModel.DocumentNumber) &&
             base.CanExecute(parameter);
     }
@@ -49,14 +49,14 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
     public override async Task ExecuteAsync(object? parameter)
     {
         var documentInfo = new Models.DocumentInfo(
-            _viewModel.SelectedDocument.Name,
-            _viewModel.DocumentNumber,
+            _viewModel.SelectedDocument?.Name!,
+            _viewModel.DocumentNumber!,
             _viewModel.IssuedDate,
             _viewModel.EndDate);
 
         try
         {
-            var doc = await _documentRepo.GetDocument(_viewModel.SelectedDocument.Name);
+            var doc = await _documentRepo.GetDocument(_viewModel.SelectedDocument?.Name!);
 
             
             await _documentInfoStore.InsertDocumentInfo(doc.Id, documentInfo);

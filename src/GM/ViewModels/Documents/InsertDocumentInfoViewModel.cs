@@ -1,13 +1,12 @@
-﻿using GM.Commands;
+﻿using GM.Stores;
+using GM.Commands;
 using GM.Services;
 using GM.Repositories;
+using System.Windows.Data;
 using System.Windows.Input;
 using GM.Commands.Documents;
 using GM.Commands.DocumentCommands;
 using System.Collections.ObjectModel;
-using GM.Stores;
-using GM.Models;
-using System.Windows.Data;
 
 namespace GM.ViewModels.Documents;
 
@@ -15,6 +14,9 @@ public class InsertDocumentInfoViewModel : ViewModelBase
 {
     private readonly DocumentStore _documentStore;
     private readonly ObservableCollection<Models.Document> _docsObs;
+    private readonly ObservableCollection<Models.Vehicle> _vehiclesObs;
+
+    public CollectionView Vehicles { get; }
     public IEnumerable<Models.Document> Documents => _docsObs;
 
 
@@ -62,9 +64,8 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         }
     }
 
-
-    private Models.Document _selectedDocument = new("");
-    public Models.Document SelectedDocument
+    private Models.Document? _selectedDocument;
+    public Models.Document? SelectedDocument
     {
         get => _selectedDocument; 
         set 
@@ -74,104 +75,43 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         }
     }
 
-    // Testing
-    private readonly ObservableCollection<Models.Vehicle> _vehicleObs;
-    public CollectionView Vehicles { get; }
-
-
-
-    private Vehicle? _selectedVehicle;
-    public Vehicle? SelectedVehicle
+    private Models.Vehicle? _selectedVehicle;
+    public Models.Vehicle? SelectedVehicle
     {
         get => _selectedVehicle;
         set
         {
-            if (value != null)
+            if (value is not null)
             {
                 _selectedVehicle = value;
                 OnPropertyChanged(nameof(SelectedVehicle));
-                //SearchVehicle = _selectedVehicle.Code ?? _selectedVehicle.PlateNumber;
+                SearchVehicleText = SelectedVehicle?.VehicleComboBoxText;
             }
         }
     }
 
-    //private Vehicle? _searchVehicle;
-    //public Vehicle? SearchVehicle
-    //{
-    //    get => _searchVehicle;
-    //    set
-    //    {
-    //        if (value != null)
-    //        {
-    //            _searchVehicle = value;
-    //            OnPropertyChanged(nameof(SearchVehicle));
-
-    //            //Vehicles.Refresh();
-
-    //            //if (_searchVehicle != SelectedVehicle?.Code ||
-    //            //    _searchVehicle != SelectedVehicle?.PlateNumber)
-    //            //{
-    //            //    Vehicles.Refresh();
-    //            //}
-    //        }
-    //    }
-    //}
-
-
-    private string? _searchVehicle;
-    public string? SearchVehicle
+    private string? _searchVehicleText;
+    public string? SearchVehicleText
     {
-        get => _searchVehicle;
+        get => _searchVehicleText;
         set
         {
-            if (value != null)
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                _searchVehicle = value;
-                OnPropertyChanged(nameof(SearchVehicle));
+                _searchVehicleText = value;
+                OnPropertyChanged(nameof(SearchVehicleText));
+
+                if (SearchVehicleText != SelectedVehicle?.VehicleComboBoxText) Vehicles.Refresh();
+            }
+            else
+            {
+                SelectedVehicle = null;
+                OnPropertyChanged(nameof(SelectedVehicle));
 
                 Vehicles.Refresh();
-
-                if (_searchVehicle != SelectedVehicle?.Code ||
-                    _searchVehicle != SelectedVehicle?.PlateNumber)
-                {
-                    Vehicles.Refresh();
-                }
             }
         }
     }
-
-
-
-
-    //private string? _selectedDocumentName;
-    //public string? SelectedDocumentName
-    //{
-    //    get => _selectedDocumentName;
-    //    set
-    //    {
-    //        _selectedDocumentName = value;
-    //        OnPropertyChanged(nameof(SelectedDocumentName));
-    //    }
-    //}
-
-
-    //private ObservableCollection<DocumentViewModel> _documentNames;
-
-    //public IEnumerable<DocumentViewModel> DocumentNames
-    //{
-    //    get
-    //    {
-    //        var documentNamesList = new List<DocumentViewModel>();
-
-    //        foreach (var documentName in _documentRepo.GetDocuments()) 
-    //        {
-    //            documentNamesList.Add(new DocumentViewModel(documentName));
-    //        }
-
-    //        return documentNamesList;
-    //    }
-    //}
-
 
 
     public ICommand SubmitCommand { get; }
@@ -191,34 +131,16 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         _documentStore = documentStore;
         _docsObs = new ObservableCollection<Models.Document>();
 
-
-
-        _vehicleObs = GetVehicles();
-        Vehicles = (CollectionView) new CollectionViewSource { Source = _vehicleObs }.View;
-        Vehicles.Filter = DropDownFilter;
-
-
+        _vehiclesObs = GetVehicles();
+        Vehicles = (CollectionView)new CollectionViewSource { Source = _vehiclesObs }.View;
+        Vehicles.Filter = VehicleFilter;
 
         SubmitCommand = new SubmitDocumentInfoCommand(this, documentInfoRepo, documentRepo, documentInfoStore, documentsViewNavigationService);
         CancelCommand = new NavigateCommand<DocumentsViewModel>(documentsViewNavigationService);
         LoadDocumentNamesCommand = new LoadDocumentNamesCommand(this, documentStore);
         InsertDocumentNameCommand = new InsertDocumentNameCommand(this, userRepo, documentRepo, documentStore, documentConflictValidation);
 
-
         documentStore.DocumentInserted += OnDocumentInserted;
-    }
-
-    private bool DropDownFilter(object obj)
-    {
-        Vehicle? vehicle = obj as Vehicle;
-
-        if (vehicle is null) return false;
-
-        if (string.IsNullOrEmpty(SearchVehicle)) return true;
-
-        return vehicle.Code.ToLower().Contains(SearchVehicle.ToLower()) ||
-            vehicle.PlateNumber.Contains(SearchVehicle.ToLower());
-
     }
 
     public override void Dispose()
@@ -259,28 +181,38 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         }
     }
 
-    private void OnDocumentInserted(Document document)
+    private void OnDocumentInserted(Models.Document document)
     {
         _docsObs.Add(document);
     }
 
+    private bool VehicleFilter(object obj)
+    {
+        var vehicle = obj as Models.Vehicle;
 
+        if (vehicle == null) return false;
+
+        if (string.IsNullOrEmpty(SearchVehicleText)) return true;
+
+        return vehicle.Code.ToLower().Contains(SearchVehicleText.ToLower()) ||
+            vehicle.PlateNumber.ToLower().Contains(SearchVehicleText.ToLower());
+    }
 
 
     // testing
     //private bool DropDownFilter()
 
-    private static ObservableCollection<Vehicle> GetVehicles()
+    private static ObservableCollection<Models.Vehicle> GetVehicles()
     {
-        return new ObservableCollection<Vehicle>
+        return new ObservableCollection<Models.Vehicle>
         {
-            new Vehicle("F43211","MINI BUS", "NISSAN", "000021.321.16"),
-            new Vehicle("F09821","PICK UP", "FIAT", "1221.121.16"),
-            new Vehicle("F98301","c/ STATION G", "RENAULT", "32134.311.16"),
-            new Vehicle("F98401","BREAK T.T", "MERCEDES", "8392.119.16"),
-            new Vehicle("F09841","C/ CITERNE A GASOIL", "IVECO", "23211.115.16"),
-            new Vehicle("F89401","VIT", "MERCEDES", "98311.222.16"),
-            new Vehicle("F09418","MINI BUS", "TOYOTA", "0931112.211.16"),
+            new Models.Vehicle("F43211","MINI BUS", "NISSAN", "000021.321.16"),
+            new Models.Vehicle("F09821","PICK UP", "FIAT", "1221.121.16"),
+            new Models.Vehicle("F98301","c/ STATION G", "RENAULT", "32134.311.16"),
+            new Models.Vehicle("F98401","BREAK T.T", "MERCEDES", "8392.119.16"),
+            new Models.Vehicle("F09841","C/ CITERNE A GASOIL", "IVECO", "23211.115.16"),
+            new Models.Vehicle("F89401","VIT", "MERCEDES", "98311.222.16"),
+            new Models.Vehicle("F09418","MINI BUS", "TOYOTA", "0931112.211.16"),
         };
     }
 }
