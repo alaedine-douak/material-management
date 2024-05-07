@@ -30,25 +30,26 @@ public class DocumentsViewModel : ViewModelBase
     public ICommand InsertDocumentInfoCommand { get; }
 
     public DocumentsViewModel(
+        InsertDocumentInfoViewModel insertDocumentViewModel,
+        VehicleStore vehicleStore,
         DocumentStore documentStore,
         DocumentInfoStore documentInfoStore,
-        InsertDocumentInfoViewModel insertDocumentViewModel,
         NavigationService<InsertDocumentInfoViewModel> insertDocumentInfoNavigationService)
     {
         _documentInfos = new ObservableCollection<DocumentInfo>();
 
-        LoadDocumentInfosCommand = new LoadDocumentInfosCommand(this, insertDocumentViewModel, documentInfoStore, documentStore);
+        LoadDocumentInfosCommand = new LoadDocumentInfosCommand(this, insertDocumentViewModel, vehicleStore, documentStore, documentInfoStore);
         InsertDocumentInfoCommand = new NavigateCommand<InsertDocumentInfoViewModel>(insertDocumentInfoNavigationService);
     }
 
-
     public static DocumentsViewModel LoadViewModel(
+        InsertDocumentInfoViewModel insertDocumentInfoViewModel,
+        VehicleStore vehicleStore,
         DocumentStore documentStore, 
         DocumentInfoStore documentInfoStore,
-        InsertDocumentInfoViewModel insertDocumentInfoViewModel,
         NavigationService<InsertDocumentInfoViewModel> insertDocumentInfoNavigationService)
     {
-        DocumentsViewModel viewModel = new DocumentsViewModel(documentStore, documentInfoStore, insertDocumentInfoViewModel, insertDocumentInfoNavigationService);
+        DocumentsViewModel viewModel = new DocumentsViewModel(insertDocumentInfoViewModel, vehicleStore, documentStore, documentInfoStore, insertDocumentInfoNavigationService);
 
         viewModel.LoadDocumentInfosCommand.Execute(null);
 

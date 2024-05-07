@@ -7,21 +7,18 @@ using GM.Extensions;
 using System.Windows;
 using GM.Repositories;
 using Microsoft.Extensions.Hosting;
+using GM.Repositories.VehicleRepos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using GM.Repositories.VehicleRepos;
 
 namespace GM;
 
 public partial class App : Application
 {
-    //private readonly IHost _host;
-    //public App() => _host = CreateHostBuilder().Build();
+    private static IHost? _hosting;
 
-    private static IHost? __Hosting;
-
-    public static IHost Hosting => __Hosting ??= CreateHostBuilder().Build();
+    public static IHost Hosting => _hosting ??= CreateHostBuilder().Build();
 
     public static IHostBuilder CreateHostBuilder() => Host
         .CreateDefaultBuilder()
@@ -35,6 +32,7 @@ public partial class App : Application
 
         services.AddSingleton<NavigationStore>();
 
+        services.AddSingleton<VehicleStore>();
         services.AddSingleton<DocumentStore>();
         services.AddSingleton<DocumentInfoStore>();
 
@@ -65,12 +63,6 @@ public partial class App : Application
             dbContext.Database.Migrate();
         }
 
-        //using (var serviceScope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
-        //{
-        //    serviceScope.ServiceProvider.GetRequiredService<GMDbContext>().Database.Migrate();
-        //}
-
-
         var navigationService = host.Services.GetRequiredService<NavigationService<HomeViewModel>>();
         navigationService.Navigate();
 
@@ -88,38 +80,5 @@ public partial class App : Application
         using var host = Hosting;
         await host.StopAsync();
     }
-
-    //private static IHostBuilder CreateHostBuilder()
-    //    => Host
-    //        .CreateDefaultBuilder()
-    //        .AddViewModels()
-    //        .ConfigureServices((hostContext, services) =>
-    //        {
-    //            var connectionString = hostContext.Configuration.GetConnectionString("GMConnectionString");
-
-    //            services.AddDbContext<GMDbContext>(options =>
-    //            {
-    //                options.UseNpgsql(connectionString);
-    //                options.UseLazyLoadingProxies();
-    //            });
-
-    //            services.AddScoped<NavigationStore>();
-    //            services.AddScoped<DocumentStore>();
-    //            services.AddScoped<DocumentInfoStore>();
-
-    //            services.AddScoped<IUserRepository, UserRepository>();
-    //            services.AddScoped<IDocumentRepo, DocumentRepo>();
-    //            services.AddScoped<IDocumentInfoRepo, DocumentInfoRepo>();
-    //            services.AddScoped<IDocumentConflictValidator, DocumentConflictValidator>();
-
-
-    //            services.AddSingleton(s => new User("gmadmin"));
-
-
-    //            services.AddSingleton(s => new MainWindow
-    //            {
-    //                DataContext = s.GetRequiredService<MainWindowViewModel>()
-    //            });
-    //        });
 }
 

@@ -1,23 +1,23 @@
-﻿using GM.Repositories;
+﻿using GM.Stores;
 using GM.ViewModels.Vehicles;
 using System.Windows;
 
 namespace GM.Commands.VehicleCommands;
 
 public class LoadVehiclesCommand(
-    IVehicleRepo vehicleRepo,
-    VehicleListViewModel vehicleListViewModel) : AsyncCommandBase
+    VehicleListViewModel vehicleListViewModel,
+    VehicleStore vehicleStore) : AsyncCommandBase
 {
     private readonly VehicleListViewModel _vehicleListViewModel = vehicleListViewModel;
-    private readonly IVehicleRepo _vehicleRepo = vehicleRepo;
+    private readonly VehicleStore _vehicleStore = vehicleStore;
 
     public override async Task ExecuteAsync(object? parameter)
     {
         try
         {
-            var vehicles = await _vehicleRepo.GetAllVehiclesAsync();
+            await _vehicleStore.LoadVehicles();
 
-            _vehicleListViewModel.UpdateVehicles(vehicles);
+            _vehicleListViewModel.UpdateVehicles(_vehicleStore.Vehicles);
         }
         catch(Exception ex)
         {

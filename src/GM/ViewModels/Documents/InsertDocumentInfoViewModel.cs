@@ -12,6 +12,7 @@ namespace GM.ViewModels.Documents;
 
 public class InsertDocumentInfoViewModel : ViewModelBase
 {
+    private readonly VehicleStore _vehicleStore;
     private readonly DocumentStore _documentStore;
     private readonly ObservableCollection<Models.Document> _docsObs;
     private readonly ObservableCollection<Models.Vehicle> _vehiclesObs;
@@ -124,21 +125,25 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         IDocumentRepo documentRepo,
         IDocumentInfoRepo documentInfoRepo,
         IDocumentConflictValidator documentConflictValidation,
+        VehicleStore vehicleStore,
         DocumentStore documentStore,
         DocumentInfoStore documentInfoStore,
         NavigationService<DocumentsViewModel> documentsViewNavigationService)
     {
+        _vehicleStore = vehicleStore;
         _documentStore = documentStore;
-        _docsObs = new ObservableCollection<Models.Document>();
 
-        _vehiclesObs = GetVehicles();
-        Vehicles = (CollectionView)new CollectionViewSource { Source = _vehiclesObs }.View;
-        Vehicles.Filter = VehicleFilter;
+        _docsObs = new ObservableCollection<Models.Document>();
+        _vehiclesObs = new ObservableCollection<Models.Vehicle>();
 
         SubmitCommand = new SubmitDocumentInfoCommand(this, documentInfoRepo, documentRepo, documentInfoStore, documentsViewNavigationService);
         CancelCommand = new NavigateCommand<DocumentsViewModel>(documentsViewNavigationService);
-        LoadDocumentNamesCommand = new LoadDocumentNamesCommand(this, documentStore);
+        LoadDocumentNamesCommand = new LoadDocumentNamesCommand(this, documentStore); 
         InsertDocumentNameCommand = new InsertDocumentNameCommand(this, userRepo, documentRepo, documentStore, documentConflictValidation);
+
+        UpdateVehicles();
+        Vehicles = (CollectionView)new CollectionViewSource { Source = _vehiclesObs }.View;
+        Vehicles.Filter = VehicleFilter;
 
         documentStore.DocumentInserted += OnDocumentInserted;
     }
@@ -154,21 +159,23 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         IDocumentRepo documentRepo,
         IDocumentInfoRepo documentInfoRepo,
         IDocumentConflictValidator documentConflictValidation,
+        VehicleStore vehicleStore,
         DocumentStore documentStore,
         DocumentInfoStore documentInfoStore,
         NavigationService<DocumentsViewModel> documentsViewNavigationService)
     {
-        InsertDocumentInfoViewModel viewModel = new(
+        InsertDocumentInfoViewModel insertDocumentInfoViewModel = new(
             userRepo, 
             documentRepo, 
             documentInfoRepo, 
             documentConflictValidation, 
+            vehicleStore,
             documentStore, 
             documentInfoStore, 
             documentsViewNavigationService);
 
-        viewModel.LoadDocumentNamesCommand.Execute(null);
-        return viewModel;
+        insertDocumentInfoViewModel.LoadDocumentNamesCommand.Execute(null);
+        return insertDocumentInfoViewModel;
     }
 
     public void UpdateDocumentNames(IEnumerable<Models.Document> documents)
@@ -178,6 +185,16 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         foreach (Models.Document doc in documents)
         {
             _docsObs.Add(doc);
+        }
+    }
+
+    private void UpdateVehicles()
+    {
+        _vehiclesObs.Clear();
+
+        foreach (Models.Vehicle vehicle in _vehicleStore.Vehicles)
+        {
+            _vehiclesObs.Add(vehicle);
         }
     }
 
@@ -202,17 +219,17 @@ public class InsertDocumentInfoViewModel : ViewModelBase
     // testing
     //private bool DropDownFilter()
 
-    private static ObservableCollection<Models.Vehicle> GetVehicles()
-    {
-        return new ObservableCollection<Models.Vehicle>
-        {
-            new Models.Vehicle("F43211","MINI BUS", "NISSAN", "000021.321.16"),
-            new Models.Vehicle("F09821","PICK UP", "FIAT", "1221.121.16"),
-            new Models.Vehicle("F98301","c/ STATION G", "RENAULT", "32134.311.16"),
-            new Models.Vehicle("F98401","BREAK T.T", "MERCEDES", "8392.119.16"),
-            new Models.Vehicle("F09841","C/ CITERNE A GASOIL", "IVECO", "23211.115.16"),
-            new Models.Vehicle("F89401","VIT", "MERCEDES", "98311.222.16"),
-            new Models.Vehicle("F09418","MINI BUS", "TOYOTA", "0931112.211.16"),
-        };
-    }
+    //private static ObservableCollection<Models.Vehicle> GetVehicles()
+    //{
+    //    return new ObservableCollection<Models.Vehicle>
+    //    {
+    //        new Models.Vehicle("F43211","MINI BUS", "NISSAN", "000021.321.16"),
+    //        new Models.Vehicle("F09821","PICK UP", "FIAT", "1221.121.16"),
+    //        new Models.Vehicle("F98301","c/ STATION G", "RENAULT", "32134.311.16"),
+    //        new Models.Vehicle("F98401","BREAK T.T", "MERCEDES", "8392.119.16"),
+    //        new Models.Vehicle("F09841","C/ CITERNE A GASOIL", "IVECO", "23211.115.16"),
+    //        new Models.Vehicle("F89401","VIT", "MERCEDES", "98311.222.16"),
+    //        new Models.Vehicle("F09418","MINI BUS", "TOYOTA", "0931112.211.16"),
+    //    };
+    //}
 }

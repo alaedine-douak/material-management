@@ -2,6 +2,8 @@
 using GM.Commands.VehicleCommands;
 using GM.Repositories;
 using GM.Services;
+using GM.Stores;
+using GM.ViewModels.Documents;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -18,17 +20,18 @@ public class VehicleListViewModel : ViewModelBase
     public ICommand InsertVehicleNavigatorCommand { get; }
 
     public VehicleListViewModel(
-        IVehicleRepo vehicleRepo,
+        VehicleStore vehicleStore,
+        InsertDocumentInfoViewModel insertDocumentInfoViewModel,
         NavigationService<InsertVehicleViewModel> insertVehicleNavigationService)
     {
         _vehicleObs = new ObservableCollection<Models.Vehicle>();
 
 
 
-        LoadVehiclesCommad = new LoadVehiclesCommand(vehicleRepo, this);
+        LoadVehiclesCommad = new LoadVehiclesCommand(this, vehicleStore);
         InsertVehicleNavigatorCommand = new NavigateCommand<InsertVehicleViewModel>(insertVehicleNavigationService);
 
-        LoadVehiclesCommad.Execute(null);
+        //LoadVehiclesCommad.Execute(null);
     }
 
 

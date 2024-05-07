@@ -41,6 +41,19 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
         }
     }
 
+    //public async Task<IQueryable<Models.Vehicle>> GetVehicles()
+    //{
+    //    using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
+    //    {
+    //        return await dbContext.Vehicles.Select(x => new Models.Vehicle(
+    //            x.Code,
+    //            x.Designation,
+    //            x.Brand,
+    //            x.PlateNumber))
+    //            .AsQueryable();
+    //    }
+    //}
+
 
     //private Models.Vehicle MapToVehicleModel(Vehicle vehicle)
     //    => new Models.Vehicle(

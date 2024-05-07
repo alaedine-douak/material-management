@@ -36,14 +36,6 @@ public static class HostBuilderExtensions
             services.AddSingleton<NavigationService<InsertVehicleViewModel>>();
             services.AddSingleton<Func<InsertVehicleViewModel>>(s => () => s.GetRequiredService<InsertVehicleViewModel>());
 
-            //services.AddTransient<DocumentListViewModel>();
-            //services.AddSingleton<NavigationService<DocumentListViewModel>>();
-            //services.AddSingleton<Func<DocumentListViewModel>>(s => () => s.GetRequiredService<DocumentListViewModel>());
-
-            //services.AddTransient<AddDocumentViewModel>();
-            //services.AddSingleton<NavigationService<AddDocumentViewModel>>();
-            //services.AddSingleton<Func<AddDocumentViewModel>>((s) => () => s.GetRequiredService<AddDocumentViewModel>());
-
             services.AddSingleton<MainWindowViewModel>();
         });
 
@@ -56,14 +48,16 @@ public static class HostBuilderExtensions
             service.GetRequiredService<IDocumentRepo>(),
             service.GetRequiredService<IDocumentInfoRepo>(),
             service.GetRequiredService<IDocumentConflictValidator>(),
+            service.GetRequiredService<VehicleStore>(),
             service.GetRequiredService<DocumentStore>(),
             service.GetRequiredService<DocumentInfoStore>(),
             service.GetRequiredService<NavigationService<DocumentsViewModel>>());
 
     private static DocumentsViewModel InitializeDocumentsListViewModel(IServiceProvider service) 
         => DocumentsViewModel.LoadViewModel(
+            service.GetRequiredService<InsertDocumentInfoViewModel>(),
+            service.GetRequiredService<VehicleStore>(),
             service.GetRequiredService<DocumentStore>(),
             service.GetRequiredService<DocumentInfoStore>(),
-            service.GetRequiredService<InsertDocumentInfoViewModel>(),
             service.GetRequiredService<NavigationService<InsertDocumentInfoViewModel>>());
 }
