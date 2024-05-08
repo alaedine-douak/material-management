@@ -2,6 +2,7 @@
 using GM.Repositories;
 using GM.Repositories.VehicleRepos;
 using GM.Services;
+using GM.Stores;
 using GM.ViewModels.Vehicles;
 using System.ComponentModel;
 using System.Windows;
@@ -11,20 +12,20 @@ namespace GM.Commands.VehicleCommands;
 public class InsertVehicleCommand : AsyncCommandBase
 {
     private readonly IUserRepo _userRepo;
-    private readonly IVehicleRepo _vehicleRepo;
+    private readonly VehicleStore _vehicleStore;
     private readonly IVehicleConflictValidator _vehicleConflictValidator;
     private readonly InsertVehicleViewModel _insertVehicleViewModel;
     private readonly NavigationService<VehicleListViewModel> _vehicleListNavigationService;
    
     public InsertVehicleCommand(
         IUserRepo userRepo,
-        IVehicleRepo vehicleRepo,
+        VehicleStore vehicleStore,
         IVehicleConflictValidator vehicleConflictValidator,
         InsertVehicleViewModel insertVehicleViewModel,
         NavigationService<VehicleListViewModel> vehicleListNavigationService)
     {
         _userRepo = userRepo;
-        _vehicleRepo = vehicleRepo;
+        _vehicleStore = vehicleStore;
         _vehicleConflictValidator = vehicleConflictValidator;
         _insertVehicleViewModel = insertVehicleViewModel;
         _vehicleListNavigationService = vehicleListNavigationService;
@@ -41,19 +42,22 @@ public class InsertVehicleCommand : AsyncCommandBase
     {
         try
         {
-            var vehicleModel = new Models.Vehicle(
-                _insertVehicleViewModel.Code!.ToUpper(),
-                _insertVehicleViewModel.Designation!.ToUpper(),
-                _insertVehicleViewModel.Brand!.ToUpper(),
-                _insertVehicleViewModel.PlateNumber!);
+            Models.Vehicle vehicleModel = new(
+                _insertVehicleViewModel.Code,
+                _insertVehicleViewModel.Designation,
+                _insertVehicleViewModel.Brand,
+                _insertVehicleViewModel.PlateNumber);
 
             var vehicle = await _vehicleConflictValidator.GetConflictingVehicle(vehicleModel);
 
             if (vehicle != null) throw new VehicleConflictException();
 
-
             var user = await _userRepo.GetUser("gmadmin");
-            await _vehicleRepo.InsertVehicle(user.Id, vehicleModel);
+
+            if (user is null) throw new Exception("There is no user");
+
+
+            await _vehicleStore.InsertVehicle(user.Id, vehicleModel);
 
             MessageBox.Show("Vehicle has inserted successfully",
                 "Insert vehicle",
@@ -66,14 +70,14 @@ public class InsertVehicleCommand : AsyncCommandBase
         {
             MessageBox.Show(
                 "Vehicle code is already taken, please try another code.",
-                "Vehicle Code Error",
+                "Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
         catch(Exception ex) 
         {
-            MessageBox.Show($"Inserting vehicle error {ex.Message}",
-                "Db Error",
+            MessageBox.Show($"[Inserting Vehicle]: {ex.Message}",
+                "Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

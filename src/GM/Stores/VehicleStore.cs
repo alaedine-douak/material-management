@@ -1,5 +1,5 @@
-﻿using GM.Repositories;
-using System.Windows.Controls;
+﻿using GM.Models;
+using GM.Repositories;
 
 namespace GM.Stores;
 
@@ -10,7 +10,9 @@ public class VehicleStore
 
     private Lazy<Task> _initializeLazy;
 
+
     public IEnumerable<Models.Vehicle> Vehicles => _vehicles;
+    //public event Action<Models.Vehicle>? VehicleInserted;
 
     public VehicleStore(IVehicleRepo vehicleRepo)
     {
@@ -18,6 +20,15 @@ public class VehicleStore
         _vehicles = new List<Models.Vehicle>();
 
         _initializeLazy = new Lazy<Task>(Initialize);
+    }
+
+    public async Task InsertVehicle(int userId, Models.Vehicle vehicle)
+    {
+        await _vehicleRepo.InsertVehicle(userId, vehicle);
+
+        _vehicles.Add(vehicle);
+
+        //OnVehicleInserted(vehicle);
     }
 
     public async Task LoadVehicles()
@@ -40,4 +51,10 @@ public class VehicleStore
         _vehicles.Clear();
         _vehicles.AddRange(vehicles);
     }
+
+    //private void OnVehicleInserted(Vehicle vehicle)
+    //{
+    //    VehicleInserted?.Invoke(vehicle);
+    //}
+
 }

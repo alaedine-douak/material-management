@@ -214,22 +214,4 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         return vehicle.Code.ToLower().Contains(SearchVehicleText.ToLower()) ||
             vehicle.PlateNumber.ToLower().Contains(SearchVehicleText.ToLower());
     }
-
-
-    // testing
-    //private bool DropDownFilter()
-
-    //private static ObservableCollection<Models.Vehicle> GetVehicles()
-    //{
-    //    return new ObservableCollection<Models.Vehicle>
-    //    {
-    //        new Models.Vehicle("F43211","MINI BUS", "NISSAN", "000021.321.16"),
-    //        new Models.Vehicle("F09821","PICK UP", "FIAT", "1221.121.16"),
-    //        new Models.Vehicle("F98301","c/ STATION G", "RENAULT", "32134.311.16"),
-    //        new Models.Vehicle("F98401","BREAK T.T", "MERCEDES", "8392.119.16"),
-    //        new Models.Vehicle("F09841","C/ CITERNE A GASOIL", "IVECO", "23211.115.16"),
-    //        new Models.Vehicle("F89401","VIT", "MERCEDES", "98311.222.16"),
-    //        new Models.Vehicle("F09418","MINI BUS", "TOYOTA", "0931112.211.16"),
-    //    };
-    //}
 }

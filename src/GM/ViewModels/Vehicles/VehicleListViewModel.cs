@@ -31,7 +31,7 @@ public class VehicleListViewModel : ViewModelBase
         LoadVehiclesCommad = new LoadVehiclesCommand(this, vehicleStore);
         InsertVehicleNavigatorCommand = new NavigateCommand<InsertVehicleViewModel>(insertVehicleNavigationService);
 
-        //LoadVehiclesCommad.Execute(null);
+        LoadVehiclesCommad.Execute(null);
     }
 
 

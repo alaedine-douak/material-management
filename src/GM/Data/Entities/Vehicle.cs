@@ -6,10 +6,10 @@ namespace GM.Data.Entities;
 public class Vehicle
 {
     public int Id { get; set; }
-    public string Code { get; set; } = null!;
-    public string Designation { get; set; } = null!;
-    public string Brand { get; set; } = null!;
-    public string PlateNumber { get; set; } = null!;
+    public string? Code { get; set; }
+    public string? Designation { get; set; }
+    public string? Brand { get; set; }
+    public string? PlateNumber { get; set; }
 
 
     public int UserId { get; set; }

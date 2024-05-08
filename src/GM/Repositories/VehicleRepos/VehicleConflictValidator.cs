@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GM.Repositories.VehicleRepos;
 
-public class VehicleConflictValidator(
-    IGMDbContextFactory dbContextFactory) : IVehicleConflictValidator
+public class VehicleConflictValidator(IGMDbContextFactory dbContextFactory) : IVehicleConflictValidator
 {
     private readonly IGMDbContextFactory _dbContextFactory = dbContextFactory;
 

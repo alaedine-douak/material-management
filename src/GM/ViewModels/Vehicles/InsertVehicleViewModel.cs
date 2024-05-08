@@ -7,6 +7,8 @@ using System.ComponentModel;
 using GM.Commands.VehicleCommands;
 using GM.Repositories.VehicleRepos;
 using System.Text.RegularExpressions;
+using GM.Stores;
+using GM.Models;
 
 namespace GM.ViewModels.Vehicles;
 
@@ -95,7 +97,7 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public InsertVehicleViewModel(
         IUserRepo userRepo,
-        IVehicleRepo vehicleRepo,
+        VehicleStore vehicleStore,
         IVehicleConflictValidator vehicleConflictValidator,
         NavigationService<VehicleListViewModel> vehicleListNavigationService)
     {
@@ -104,14 +106,21 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
 
         SubmitCommand = new InsertVehicleCommand(
             userRepo, 
-            vehicleRepo, 
+            vehicleStore, 
             vehicleConflictValidator, 
             this, 
             vehicleListNavigationService);
 
         CancelCommand = new NavigateCommand<VehicleListViewModel>(
             vehicleListNavigationService);
+
+        //vehicleStore.VehicleInserted += OnVehicleInserted;
     }
+
+    //private void OnVehicleInserted(Vehicle vehicle)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     public IEnumerable GetErrors(string? propertyName)
     {
