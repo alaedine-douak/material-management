@@ -12,6 +12,9 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
     {
         using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
         {
+
+
+
             var newVehicle = new Vehicle
             {
                 UserId = userId,

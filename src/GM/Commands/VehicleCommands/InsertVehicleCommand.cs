@@ -43,14 +43,14 @@ public class InsertVehicleCommand : AsyncCommandBase
         try
         {
             Models.Vehicle vehicleModel = new(
-                _insertVehicleViewModel.Code,
-                _insertVehicleViewModel.Designation,
-                _insertVehicleViewModel.Brand,
-                _insertVehicleViewModel.PlateNumber);
+                _insertVehicleViewModel.Code?.ToUpper(),
+                _insertVehicleViewModel.Designation?.ToUpper(),
+                _insertVehicleViewModel.Brand?.ToUpper(),
+                _insertVehicleViewModel.PlateNumber?.ToUpper());
 
-            var vehicle = await _vehicleConflictValidator.GetConflictingVehicle(vehicleModel);
+            //var vehicle = await _vehicleConflictValidator.GetConflictingVehicle(vehicleModel);
 
-            if (vehicle != null) throw new VehicleConflictException();
+            //if (vehicle != null) throw new VehicleConflictException();
 
             var user = await _userRepo.GetUser("gmadmin");
 
@@ -66,14 +66,14 @@ public class InsertVehicleCommand : AsyncCommandBase
 
             _vehicleListNavigationService.Navigate();
         }
-        catch(VehicleConflictException)
-        {
-            MessageBox.Show(
-                "Vehicle code is already taken, please try another code.",
-                "Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
+        //catch(VehicleConflictException)
+        //{
+        //    MessageBox.Show(
+        //        "Vehicle code is already taken, please try another code.",
+        //        "Error",
+        //        MessageBoxButton.OK,
+        //        MessageBoxImage.Error);
+        //}
         catch(Exception ex) 
         {
             MessageBox.Show($"[Inserting Vehicle]: {ex.Message}",

@@ -13,8 +13,7 @@ public class UserRepo(IGMDbContextFactory dbContextFactory) : IUserRepo
         using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
         {
             return await dbContext.Users
-               .FirstOrDefaultAsync(x => x.Username.ToLower() == username.ToLower())
-               ?? new();
+               .FirstOrDefaultAsync(x => x.Username.ToLower() == username.ToLower()) ?? new();
         }
     }
 }

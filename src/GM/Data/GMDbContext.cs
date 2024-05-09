@@ -10,8 +10,21 @@ public class GMDbContext : DbContext
     public DbSet<DocumentInfo> DocumentInfos => Set<DocumentInfo>();
     public DbSet<Vehicle> Vehicles => Set<Vehicle>();
 
-    public GMDbContext(DbContextOptions options) : base(options)
+    public GMDbContext(DbContextOptions options) : base(options) 
     {
-        
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //modelBuilder
+        //    .HasSequence<int>("vehicle_id_auto_increment")
+        //    .StartsAt(96)
+        //    .IncrementsBy(1);
+
+        //modelBuilder
+        //    .Entity<Vehicle>()
+        //    .Property(x => x.Id)
+        //    .HasDefaultValueSql("nextval('vehicle_id_auto_increment')");
+      
     }
 }

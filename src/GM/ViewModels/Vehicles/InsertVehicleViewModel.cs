@@ -64,7 +64,7 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
 
             ClearErrors(nameof(PlateNumber));
 
-            if (!Regex.IsMatch(_plateNumber!, @"^\d{1,6}\.\d{3}\.\d{2}$") )
+            if (!Regex.IsMatch(_plateNumber!, @"((^| )(\d{1,6}\.\d{3}\.\d{2})|-)+$") )
             {
                 AddError(nameof(PlateNumber), "invalid format");
             }

@@ -9,5 +9,6 @@ public class User
     [Column(TypeName = "VARCHAR(25)")]
     public string Username { get; set; } = null!;
 
-    public virtual ICollection<Document> Document { get; set; } = null!;
+    public ICollection<Document>? Documents { get; set; }
+    public ICollection<Vehicle>? Vehicles { get; set; } 
 }
