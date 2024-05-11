@@ -12,16 +12,13 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
     {
         using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
         {
-
-
-
             var newVehicle = new Vehicle
             {
                 UserId = userId,
-                Code = vehicle.Code,
-                Designation = vehicle.Designation,
-                Brand = vehicle.Brand,
-                PlateNumber = vehicle.PlateNumber,
+                Code = vehicle.Code ?? "-",
+                Designation = vehicle.Designation ?? "Unknown",
+                Brand = vehicle.Brand ?? "Unknown",
+                PlateNumber = vehicle.PlateNumber ?? "-",
             };
 
             dbContext.Vehicles.Add(newVehicle);
@@ -39,30 +36,12 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
                     v.Code,
                     v.Designation,
                     v.Brand,
-                    v.PlateNumber))
+                    v.PlateNumber
+                    )
+                    {
+                        VehicleId = v.Id.ToString()
+                    })
                 .ToListAsync();
         }
     }
-
-    //public async Task<IQueryable<Models.Vehicle>> GetVehicles()
-    //{
-    //    using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
-    //    {
-    //        return await dbContext.Vehicles.Select(x => new Models.Vehicle(
-    //            x.Code,
-    //            x.Designation,
-    //            x.Brand,
-    //            x.PlateNumber))
-    //            .AsQueryable();
-    //    }
-    //}
-
-
-    //private Models.Vehicle MapToVehicleModel(Vehicle vehicle)
-    //    => new Models.Vehicle(
-    //        vehicle.Code,
-    //        vehicle.Designation, 
-    //        vehicle.Brand, 
-    //        vehicle.PlateNumber,
-    //        vehicle.UserId);
 }

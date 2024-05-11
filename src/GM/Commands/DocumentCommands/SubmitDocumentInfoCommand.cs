@@ -10,7 +10,6 @@ namespace GM.Commands.DocumentCommands;
 public class SubmitDocumentInfoCommand : AsyncCommandBase
 {
     private readonly InsertDocumentInfoViewModel _viewModel;
-    private readonly IDocumentInfoRepo _documentInfoRepo;
     private readonly IDocumentRepo _documentRepo;
     private readonly DocumentInfoStore _documentInfoStore;
     private readonly NavigationService<DocumentsViewModel> _navigationService;
@@ -23,7 +22,6 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
         NavigationService<DocumentsViewModel> navigationService)
     {
         _viewModel = viewModel;
-        _documentInfoRepo = documentInfoRepo;
         _documentRepo = documentRepo;
         _documentInfoStore = documentInfoStore;
         _navigationService = navigationService;
@@ -33,7 +31,8 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(InsertDocumentInfoViewModel.SelectedDocument) ||
-            e.PropertyName == nameof(InsertDocumentInfoViewModel.DocumentNumber))
+            e.PropertyName == nameof(InsertDocumentInfoViewModel.DocumentNumber) ||
+            e.PropertyName == nameof(InsertDocumentInfoViewModel.SelectedVehicle))
         {
             OnCanExecutedChanged();
         }
@@ -43,23 +42,40 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
     {
         return !string.IsNullOrEmpty(_viewModel.SelectedDocument?.Name) && 
             !string.IsNullOrEmpty(_viewModel.DocumentNumber) &&
+            _viewModel.SelectedVehicle is not null &&
             base.CanExecute(parameter);
     }
 
     public override async Task ExecuteAsync(object? parameter)
     {
-        var documentInfo = new Models.DocumentInfo(
-            _viewModel.SelectedDocument?.Name!,
-            _viewModel.DocumentNumber!,
-            _viewModel.IssuedDate,
-            _viewModel.EndDate);
+
+        var docInfoVM = new DocumentInfoViewModel(
+            new Models.DocumentInfo(
+                _viewModel.SelectedDocument?.Name!,
+                _viewModel.DocumentNumber!,
+                _viewModel.IssuedDate,
+                _viewModel.EndDate), 
+            new Models.Vehicle(
+                _viewModel.SelectedVehicle!.Code, 
+                _viewModel.SelectedVehicle.Designation,
+                _viewModel.SelectedVehicle.Brand,
+                _viewModel.SelectedVehicle.PlateNumber));
+
+        //var documentInfo = new Models.DocumentInfo(
+        //    _viewModel.SelectedDocument?.Name!,
+        //    _viewModel.DocumentNumber!,
+        //    _viewModel.IssuedDate,
+        //    _viewModel.EndDate);
 
         try
         {
-            var doc = await _documentRepo.GetDocument(_viewModel.SelectedDocument?.Name!);
 
-            
-            await _documentInfoStore.InsertDocumentInfo(doc.Id, documentInfo);
+            var vehicleId = int.Parse(_viewModel.SelectedVehicle?.VehicleId!);
+
+            var doc = await _documentRepo.GetDocumentByName(_viewModel.SelectedDocument?.Name!);
+
+            ///
+            await _documentInfoStore.InsertDocumentInfo(doc!.Id, vehicleId, docInfoVM);
 
             MessageBox.Show("Successfully insert document information",
                 "Insert document information",
@@ -68,11 +84,11 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
 
             _navigationService.Navigate();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             MessageBox.Show(
-                "Error when submitting a new document",
-                "Submitting document error",
+                $"[Document Information Error]: {ex.Message}",
+                "Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

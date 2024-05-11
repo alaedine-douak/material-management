@@ -2,7 +2,7 @@
 
 public interface IDocumentRepo
 {
-    Task<IEnumerable<Models.Document>> GetDocumentNames();
-    Task<Data.Entities.Document> GetDocument(string documentName);
-    Task InsertDocumentNameAsync(int userId, Models.Document document);
+    Task<IEnumerable<Models.Document>> GetAllDocuments();
+    Task<Data.Entities.Document?> GetDocumentByName(string name);
+    Task InsertDocumentAsync(int userId, Models.Document document);
 }

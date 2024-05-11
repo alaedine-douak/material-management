@@ -23,7 +23,7 @@ public class DocumentStore
 
     public async Task InsertDocument(int userId, Models.Document document)
     {
-        await _documentRepo.InsertDocumentNameAsync(userId, document);
+        await _documentRepo.InsertDocumentAsync(userId, document);
 
         _docs.Add(document);
 
@@ -50,7 +50,7 @@ public class DocumentStore
 
     private async Task Initialize()
     {
-        IEnumerable<Models.Document> docs = await _documentRepo.GetDocumentNames();
+        IEnumerable<Models.Document> docs = await _documentRepo.GetAllDocuments();
     
         _docs.Clear();
         _docs.AddRange(docs);

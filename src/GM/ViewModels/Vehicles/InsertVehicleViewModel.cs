@@ -1,14 +1,12 @@
-﻿using GM.Commands;
+﻿using GM.Stores;
+using GM.Commands;
 using GM.Services;
 using GM.Repositories;
 using System.Collections;
 using System.Windows.Input;
 using System.ComponentModel;
 using GM.Commands.VehicleCommands;
-using GM.Repositories.VehicleRepos;
 using System.Text.RegularExpressions;
-using GM.Stores;
-using GM.Models;
 
 namespace GM.ViewModels.Vehicles;
 
@@ -98,7 +96,6 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
     public InsertVehicleViewModel(
         IUserRepo userRepo,
         VehicleStore vehicleStore,
-        IVehicleConflictValidator vehicleConflictValidator,
         NavigationService<VehicleListViewModel> vehicleListNavigationService)
     {
         _propertyErrors = new();
@@ -107,7 +104,6 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
         SubmitCommand = new InsertVehicleCommand(
             userRepo, 
             vehicleStore, 
-            vehicleConflictValidator, 
             this, 
             vehicleListNavigationService);
 

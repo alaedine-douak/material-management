@@ -40,38 +40,66 @@
         <ListView Grid.Row="1" ItemsSource="{Binding DocumentInfos}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Document №">
+                    <GridViewColumn Header="Document Nº">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding DocumentNumber}" />
+                                <TextBlock Text="{Binding DocumentNo}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Document Name">
+                    <GridViewColumn Header="Nom du document">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding DocumentName}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Issued Date">
+                    <GridViewColumn Header="Date de délivrance">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding IssuedDate}" />
+                                <TextBlock Text="{Binding DocumentIssuedDate, StringFormat=d}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="End Date">
+                    <GridViewColumn Header="Date d'expiration">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding EndDate}" />
+                                <TextBlock Text="{Binding DocumentEndDate, StringFormat=d}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Remind days">
+                    <GridViewColumn Header="Jours restants">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RemainingDays}" />
+                                <TextBlock Text="{Binding RemainingDays, StringFormat={}{0:%d}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Code du véhicule">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding VehicleCode, StringFormat={}{0:%d}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Immatriculation de véhicule">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding VehiclePlateNumber, StringFormat={}{0:%d}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Désignation">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding VehicleDesignation, StringFormat={}{0:%d}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Marque">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding vehicleBrand, StringFormat={}{0:%d}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -80,12 +108,12 @@
         </ListView>
 
         <!--<Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+        <RowDefinition Height="35" />
+        <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="filtering + grouping" />
+        <TextBlock Grid.Row="0" Text="filtering + grouping" />
 
 
         </Grid>-->

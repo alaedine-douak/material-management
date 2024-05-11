@@ -21,7 +21,7 @@ public class DocumentConflictValidator(IGMDbContextFactory dbContextFactory) : I
                 return null;
             }
 
-            return new Models.Document(document.Name);
+            return new Models.Document(document.Name, null);
         }
     }
 }

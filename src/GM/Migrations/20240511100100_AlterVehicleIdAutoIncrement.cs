@@ -6,15 +6,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     /// <inheritdoc />
-    public partial class VehicleIdAutoIncrement : Migration
+    public partial class AlterVehicleIdAutoIncrement : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateSequence<int>(
-                name: "vehicle_id_auto_increment",
-                startValue: 96L);
-
             migrationBuilder.AlterColumn<int>(
                 name: "Id",
                 table: "Vehicles",
@@ -29,9 +25,6 @@ namespace GM.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropSequence(
-                name: "vehicle_id_auto_increment");
-
             migrationBuilder.AlterColumn<int>(
                 name: "Id",
                 table: "Vehicles",

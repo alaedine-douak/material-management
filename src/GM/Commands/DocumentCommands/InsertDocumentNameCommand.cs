@@ -4,6 +4,7 @@ using System.ComponentModel;
 using GM.Repositories;
 using GM.Exceptions;
 using GM.Stores;
+using GM.Extensions;
 
 namespace GM.Commands.Documents;
 
@@ -34,7 +35,8 @@ public class InsertDocumentNameCommand : AsyncCommandBase
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(InsertDocumentInfoViewModel.DocumentName))
+        if (e.PropertyName == nameof(InsertDocumentInfoViewModel.DocumentName) ||
+            e.PropertyName == nameof(InsertDocumentInfoViewModel.AlartedDuration))
         {
             OnCanExecutedChanged();
         }
@@ -42,18 +44,23 @@ public class InsertDocumentNameCommand : AsyncCommandBase
 
     public override bool CanExecute(object? parameter)
     {
-        return !string.IsNullOrEmpty(_viewModel.DocumentName) && base.CanExecute(parameter);
+        return !string.IsNullOrEmpty(_viewModel.DocumentName) && 
+            !string.IsNullOrEmpty(_viewModel.AlartedDuration) &&
+            base.CanExecute(parameter);
     }
 
     public override async Task ExecuteAsync(object? parameter)
     {
-
-        Models.Document document = new(_viewModel.DocumentName!);
-        _viewModel.DocumentName = string.Empty;
-
-
         try
         {
+            var document = new Models.Document(
+                _viewModel.DocumentName.CapitalizeEachWord(), 
+                int.Parse(_viewModel.AlartedDuration));
+
+            _viewModel.DocumentName = string.Empty;
+            _viewModel.AlartedDuration = string.Empty;
+
+
             var conflictingDocument = await _documentConflictValidation.GetConflictingDocument(document);
 
             if (conflictingDocument != null)
@@ -64,7 +71,9 @@ public class InsertDocumentNameCommand : AsyncCommandBase
 
             var user = await _userRepo.GetUser("gmadmin");
 
-            await _documentStore.InsertDocument(user.Id, document);
+            if (user is null) throw new Exception("There is no user");
+
+            await _documentStore.InsertDocument(user!.Id, document);
 
             MessageBox.Show(
                 "Le nom du document a été ajouté avec succès",

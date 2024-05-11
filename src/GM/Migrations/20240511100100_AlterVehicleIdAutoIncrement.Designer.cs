@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GM.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    [Migration("20240509125225_VehicleIdAutoIncrement")]
-    partial class VehicleIdAutoIncrement
+    [Migration("20240511100100_AlterVehicleIdAutoIncrement")]
+    partial class AlterVehicleIdAutoIncrement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,6 @@ namespace GM.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence<int>("vehicle_id_auto_increment")
-                .StartsAt(96L);
-
             modelBuilder.Entity("GM.Data.Entities.Document", b =>
                 {
                     b.Property<int>("Id")
@@ -35,6 +32,9 @@ namespace GM.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlertedDuration")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -68,12 +68,20 @@ namespace GM.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp(0)");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("IssuedDate")
                         .HasColumnType("timestamp(0)");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("DocumentInfos");
                 });
@@ -147,7 +155,15 @@ namespace GM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GM.Data.Entities.Vehicle", "Vehicle")
+                        .WithMany("DocumentInfos")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Document");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("GM.Data.Entities.Vehicle", b =>
@@ -171,6 +187,11 @@ namespace GM.Migrations
                     b.Navigation("Documents");
 
                     b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("GM.Data.Entities.Vehicle", b =>
+                {
+                    b.Navigation("DocumentInfos");
                 });
 #pragma warning restore 612, 618
         }

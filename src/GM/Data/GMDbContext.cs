@@ -16,15 +16,11 @@ public class GMDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder
-        //    .HasSequence<int>("vehicle_id_auto_increment")
-        //    .StartsAt(96)
-        //    .IncrementsBy(1);
 
-        //modelBuilder
-        //    .Entity<Vehicle>()
-        //    .Property(x => x.Id)
-        //    .HasDefaultValueSql("nextval('vehicle_id_auto_increment')");
-      
+        modelBuilder
+            .Entity<Vehicle>()
+            .Property(x => x.Id)
+            .HasDefaultValueSql("nextval('vehicle_id_auto_increment')");
+
     }
 }

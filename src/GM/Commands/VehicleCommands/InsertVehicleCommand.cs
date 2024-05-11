@@ -1,11 +1,9 @@
-﻿using GM.Exceptions;
-using GM.Repositories;
-using GM.Repositories.VehicleRepos;
+﻿using GM.Stores;
 using GM.Services;
-using GM.Stores;
-using GM.ViewModels.Vehicles;
-using System.ComponentModel;
 using System.Windows;
+using GM.Repositories;
+using System.ComponentModel;
+using GM.ViewModels.Vehicles;
 
 namespace GM.Commands.VehicleCommands;
 
@@ -13,29 +11,26 @@ public class InsertVehicleCommand : AsyncCommandBase
 {
     private readonly IUserRepo _userRepo;
     private readonly VehicleStore _vehicleStore;
-    private readonly IVehicleConflictValidator _vehicleConflictValidator;
-    private readonly InsertVehicleViewModel _insertVehicleViewModel;
+    private readonly InsertVehicleViewModel _viewModel;
     private readonly NavigationService<VehicleListViewModel> _vehicleListNavigationService;
    
     public InsertVehicleCommand(
         IUserRepo userRepo,
         VehicleStore vehicleStore,
-        IVehicleConflictValidator vehicleConflictValidator,
-        InsertVehicleViewModel insertVehicleViewModel,
+        InsertVehicleViewModel viewModel,
         NavigationService<VehicleListViewModel> vehicleListNavigationService)
     {
         _userRepo = userRepo;
         _vehicleStore = vehicleStore;
-        _vehicleConflictValidator = vehicleConflictValidator;
-        _insertVehicleViewModel = insertVehicleViewModel;
+        _viewModel = viewModel;
         _vehicleListNavigationService = vehicleListNavigationService;
 
-        _insertVehicleViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        _viewModel.PropertyChanged += OnViewModelPropertyChanged;
     }
 
     public override bool CanExecute(object? parameter)
     {
-        return _insertVehicleViewModel.CanInsertVehicle && base.CanExecute(parameter);
+        return _viewModel.CanInsertVehicle && base.CanExecute(parameter);
     }
 
     public override async Task ExecuteAsync(object? parameter)
@@ -43,14 +38,10 @@ public class InsertVehicleCommand : AsyncCommandBase
         try
         {
             Models.Vehicle vehicleModel = new(
-                _insertVehicleViewModel.Code?.ToUpper(),
-                _insertVehicleViewModel.Designation?.ToUpper(),
-                _insertVehicleViewModel.Brand?.ToUpper(),
-                _insertVehicleViewModel.PlateNumber?.ToUpper());
-
-            //var vehicle = await _vehicleConflictValidator.GetConflictingVehicle(vehicleModel);
-
-            //if (vehicle != null) throw new VehicleConflictException();
+                _viewModel.Code?.ToUpper()!,
+                _viewModel.Designation?.ToUpper()!,
+                _viewModel.Brand?.ToUpper()!,
+                _viewModel.PlateNumber?.ToUpper()!);
 
             var user = await _userRepo.GetUser("gmadmin");
 
@@ -66,14 +57,6 @@ public class InsertVehicleCommand : AsyncCommandBase
 
             _vehicleListNavigationService.Navigate();
         }
-        //catch(VehicleConflictException)
-        //{
-        //    MessageBox.Show(
-        //        "Vehicle code is already taken, please try another code.",
-        //        "Error",
-        //        MessageBoxButton.OK,
-        //        MessageBoxImage.Error);
-        //}
         catch(Exception ex) 
         {
             MessageBox.Show($"[Inserting Vehicle]: {ex.Message}",
@@ -85,7 +68,7 @@ public class InsertVehicleCommand : AsyncCommandBase
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(_insertVehicleViewModel.CanInsertVehicle))
+        if (e.PropertyName == nameof(_viewModel.CanInsertVehicle))
         {
             OnCanExecutedChanged();
         }

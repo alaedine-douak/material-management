@@ -10,7 +10,7 @@ namespace GM.ViewModels.Documents;
 
 public class DocumentsViewModel : ViewModelBase
 {
-    private readonly ObservableCollection<DocumentInfo> _documentInfos;
+    private readonly ObservableCollection<DocumentInfoViewModel> _documentInfos;
 
     private bool _isLoading;
     public bool IsLoading
@@ -23,7 +23,7 @@ public class DocumentsViewModel : ViewModelBase
         }
     }
 
-    public IEnumerable<DocumentInfo> DocumentInfos => _documentInfos;
+    public IEnumerable<DocumentInfoViewModel> DocumentInfos => _documentInfos;
     public bool HasDocumentInfos => _documentInfos.Any();
 
     public ICommand LoadDocumentInfosCommand { get; }
@@ -36,7 +36,7 @@ public class DocumentsViewModel : ViewModelBase
         DocumentInfoStore documentInfoStore,
         NavigationService<InsertDocumentInfoViewModel> insertDocumentInfoNavigationService)
     {
-        _documentInfos = new ObservableCollection<DocumentInfo>();
+        _documentInfos = new ObservableCollection<DocumentInfoViewModel>();
 
         LoadDocumentInfosCommand = new LoadDocumentInfosCommand(this, insertDocumentViewModel, vehicleStore, documentStore, documentInfoStore);
         InsertDocumentInfoCommand = new NavigateCommand<InsertDocumentInfoViewModel>(insertDocumentInfoNavigationService);
@@ -56,11 +56,11 @@ public class DocumentsViewModel : ViewModelBase
         return viewModel;
     }
 
-    public void UpdateDocumentInfos(IEnumerable<DocumentInfo> documentInfos)
+    public void UpdateDocumentInfos(IEnumerable<DocumentInfoViewModel> documentInfos)
     {
         _documentInfos.Clear();
 
-        foreach (DocumentInfo docInfo in documentInfos)
+        foreach (DocumentInfoViewModel docInfo in documentInfos)
         {
             _documentInfos.Add(docInfo);
         }

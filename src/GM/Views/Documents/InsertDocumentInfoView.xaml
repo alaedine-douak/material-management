@@ -186,6 +186,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
 
@@ -218,8 +219,29 @@
                     Text="{Binding DocumentName, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
+            <Grid Grid.Row="2" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Text="Durée de l'alerte" />
+
+
+                <TextBox
+                    Grid.Row="1"
+                    Width="59"
+                    Height="25"
+                    Padding="3,3,0,3"
+                    HorizontalAlignment="Left"
+                    Text="{Binding AlartedDuration, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
             <Button
-                Grid.Row="2"
+                Grid.Row="3"
                 Width="69"
                 Height="25"
                 HorizontalAlignment="Left"
@@ -227,10 +249,10 @@
                 Content="Submit" />
 
             <!--<behaviors:Interaction.Triggers>
-                    <behaviors:EventTrigger EventName="Click">
-                        <behaviorTriggers:ClearTextTriggerAction Target="{Binding ElementName=DocumentName}" />
-                    </behaviors:EventTrigger>
-                </behaviors:Interaction.Triggers>
+            <behaviors:EventTrigger EventName="Click">
+            <behaviorTriggers:ClearTextTriggerAction Target="{Binding ElementName=DocumentName}" />
+            </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
             </Button>-->
         </Grid>
         <!--#endregion-->

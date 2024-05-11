@@ -4,14 +4,16 @@ namespace GM.Data.Entities;
 
 public class Vehicle
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string Code { get; set; } = null!;
-    public string Designation { get; set; } = null!;
-    public string Brand { get; set; } = null!;
-    public string PlateNumber { get; set; } = null!;
+    public required string Code { get; set; }
+    public required string Designation { get; set; }
+    public required string Brand { get; set; }
+    public required string PlateNumber { get; set; }
 
 
     public int UserId { get; set; }
-    public User? User { get; set; } 
+    public User? User { get; set; }
+
+
+    public ICollection<DocumentInfo>? DocumentInfos { get; set; }
 }

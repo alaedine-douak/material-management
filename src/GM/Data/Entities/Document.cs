@@ -3,12 +3,13 @@
 public class Document
 {
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
+    public int AlertedDuration { get; set; }
 
 
     public int UserId { get; set; }
-    public virtual User User { get; set; } = null!;
+    public User? User { get; set; }
 
 
-    public virtual ICollection<DocumentInfo> DocumentInfos { get; set; } = null!;
+    public ICollection<DocumentInfo>? DocumentInfos { get; set; }
 }

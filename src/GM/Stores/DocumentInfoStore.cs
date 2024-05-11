@@ -1,18 +1,19 @@
 ﻿using GM.Repositories;
+using GM.ViewModels.Documents;
 
 namespace GM.Stores;
 
 public class DocumentInfoStore
 {
     private readonly IDocumentInfoRepo _documentInfoRepo;
-    private readonly List<Models.DocumentInfo> _docInfos;
+    private readonly List<DocumentInfoViewModel> _docInfos;
     private Lazy<Task> _initializeLazy;
 
-    public IEnumerable<Models.DocumentInfo> DocumentInfos => _docInfos;
+    public IEnumerable<DocumentInfoViewModel> DocumentInfos => _docInfos;
     public DocumentInfoStore(IDocumentInfoRepo documentInfoRepo)
     {
         _documentInfoRepo = documentInfoRepo;
-        _docInfos = new List<Models.DocumentInfo>();
+        _docInfos = new List<DocumentInfoViewModel>();
         _initializeLazy = new Lazy<Task>(Initialize);
         
     }
@@ -29,27 +30,20 @@ public class DocumentInfoStore
             throw;
         }
     }
-    public async Task InsertDocumentInfo(int documentId, Models.DocumentInfo documentInfo)
+
+    public async Task InsertDocumentInfo(int documentId, int vehicleId, DocumentInfoViewModel documentInfo)
     {
-        await _documentInfoRepo.InsertDocumentInfo(documentId, documentInfo);
+        await _documentInfoRepo.InsertDocumentInfo(documentId, vehicleId, documentInfo);
 
         _docInfos.Add(documentInfo);
     }
 
     private async Task Initialize()
     {
-        //TODO: implement this method
-        //IEnumerable<DocumentInfoModel> docInfos = await _user.GetAllDocumentInfos();
-
-        //IEnumerable<DocumentInfo> docInfos = Enumerable.Empty<DocumentInfo>();
-
-        IEnumerable<Models.DocumentInfo> docInfos = await _documentInfoRepo.GetAllDocumentInfos();
+        IEnumerable<DocumentInfoViewModel> docInfos = await _documentInfoRepo.GetAllDocumentInfos();
 
         _docInfos.Clear();
         _docInfos.AddRange(docInfos);
-
-        //_docInfos.Clear();
-        //_docInfos.AddRange(docInfos);
     }
 
 

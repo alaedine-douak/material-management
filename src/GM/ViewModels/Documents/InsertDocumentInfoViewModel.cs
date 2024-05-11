@@ -54,8 +54,9 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         }
     }
 
-    private string? _documentName;
-    public string? DocumentName
+    #region Document
+    private string _documentName = string.Empty;
+    public string DocumentName
     {
         get => _documentName;
         set
@@ -64,6 +65,18 @@ public class InsertDocumentInfoViewModel : ViewModelBase
             OnPropertyChanged(nameof(DocumentName));
         }
     }
+
+    private string _alartedDuration = string.Empty ;
+    public string AlartedDuration
+    {
+        get => _alartedDuration;
+        set
+        {
+            _alartedDuration = value;
+            OnPropertyChanged(nameof(AlartedDuration));
+        }
+    }
+    #endregion
 
     private Models.Document? _selectedDocument;
     public Models.Document? SelectedDocument
@@ -211,7 +224,7 @@ public class InsertDocumentInfoViewModel : ViewModelBase
 
         if (string.IsNullOrEmpty(SearchVehicleText)) return true;
 
-        return vehicle.Code.ToLower().Contains(SearchVehicleText.ToLower()) ||
-            vehicle.PlateNumber.ToLower().Contains(SearchVehicleText.ToLower());
+        return vehicle.Code!.ToLower().Contains(SearchVehicleText.ToLower()) ||
+            vehicle.PlateNumber!.ToLower().Contains(SearchVehicleText.ToLower());
     }
 }

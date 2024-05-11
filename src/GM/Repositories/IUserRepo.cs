@@ -4,5 +4,5 @@ namespace GM.Repositories;
 
 public interface IUserRepo
 {
-    Task<User> GetUser(string username);
+    Task<User?> GetUser(string username);
 }
