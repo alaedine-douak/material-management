@@ -37,7 +37,7 @@ public class DocumentRepo(
             {
                 UserId = userId,
                 Name = document.Name,
-                AlertedDuration = (int)document.AlartedDuration!
+                AlertDuration = (int)document.AlartDuration!
             };
 
 

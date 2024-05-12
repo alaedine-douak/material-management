@@ -1,7 +1,7 @@
 ﻿namespace GM.Models;
 
-public class Document(string name, int? alartedDuration)
+public class Document(string name, int? alartDuration)
 {
     public string Name { get; } = name;
-    public int? AlartedDuration { get; } = alartedDuration;
+    public int? AlartDuration { get; } = alartDuration;
 }
