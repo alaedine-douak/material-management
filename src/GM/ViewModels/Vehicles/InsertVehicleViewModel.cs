@@ -109,14 +109,7 @@ public class InsertVehicleViewModel : ViewModelBase, INotifyDataErrorInfo
 
         CancelCommand = new NavigateCommand<VehicleListViewModel>(
             vehicleListNavigationService);
-
-        //vehicleStore.VehicleInserted += OnVehicleInserted;
     }
-
-    //private void OnVehicleInserted(Vehicle vehicle)
-    //{
-    //    throw new NotImplementedException();
-    //}
 
     public IEnumerable GetErrors(string? propertyName)
     {

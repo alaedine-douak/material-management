@@ -45,13 +45,13 @@ public class InsertVehicleCommand : AsyncCommandBase
 
             var user = await _userRepo.GetUser("gmadmin");
 
-            if (user is null) throw new Exception("There is no user");
+            if (user is null) throw new Exception("Il n'y a aucun utilisateur, confirmez auprès de l'administrateur de la base de données que l'utilisateur existe !");
 
 
             await _vehicleStore.InsertVehicle(user.Id, vehicleModel);
 
-            MessageBox.Show("Vehicle has inserted successfully",
-                "Insert vehicle",
+            MessageBox.Show("Le véhicule a inséré",
+                "Insérer un véhicule",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
 
@@ -59,8 +59,8 @@ public class InsertVehicleCommand : AsyncCommandBase
         }
         catch(Exception ex) 
         {
-            MessageBox.Show($"[Inserting Vehicle]: {ex.Message}",
-                "Error",
+            MessageBox.Show($"{ex.Message}",
+                "Insérer un véhicule",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

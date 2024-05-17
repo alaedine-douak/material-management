@@ -2,6 +2,6 @@
 
 public interface IVehicleRepo
 {
-    Task InsertVehicle(int userId, Models.Vehicle vehicle);
+    Task<int> InsertVehicle(int userId, Models.Vehicle vehicle);
     Task<IEnumerable<Models.Vehicle>> GetAllVehiclesAsync();
 }

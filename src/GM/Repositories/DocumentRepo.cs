@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GM.Repositories;
 
-public class DocumentRepo(
-    IGMDbContextFactory dbContextFactory) : IDocumentRepo
+public class DocumentRepo(IGMDbContextFactory dbContextFactory) : IDocumentRepo
 {
     private readonly IGMDbContextFactory _dbContextFactory = dbContextFactory;
 

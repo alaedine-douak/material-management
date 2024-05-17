@@ -24,9 +24,17 @@ public class VehicleStore
 
     public async Task InsertVehicle(int userId, Models.Vehicle vehicle)
     {
-        await _vehicleRepo.InsertVehicle(userId, vehicle);
+        var vehicleId = await _vehicleRepo.InsertVehicle(userId, vehicle);
 
-        _vehicles.Add(vehicle);
+        var vehicleModel = new Models.Vehicle(
+            vehicle.Code,
+            vehicle.Designation,
+            vehicle.Brand,
+            vehicle.PlateNumber)
+        { VehicleId = vehicleId.ToString() };
+
+
+        _vehicles.Add(vehicleModel);
 
         //OnVehicleInserted(vehicle);
     }
@@ -51,10 +59,4 @@ public class VehicleStore
         _vehicles.Clear();
         _vehicles.AddRange(vehicles);
     }
-
-    //private void OnVehicleInserted(Vehicle vehicle)
-    //{
-    //    VehicleInserted?.Invoke(vehicle);
-    //}
-
 }

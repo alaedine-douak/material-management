@@ -18,7 +18,7 @@ public abstract class AsyncCommandBase : CommandBase
         return !IsExecuting && base.CanExecute(parameter);
     }
 
-    public override async void Execute(object? parameter) // task
+    public override async void Execute(object? parameter)
     {
         try
         {

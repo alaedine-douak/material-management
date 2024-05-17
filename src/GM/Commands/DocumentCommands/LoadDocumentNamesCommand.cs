@@ -1,5 +1,6 @@
 ﻿using GM.Stores;
 using GM.ViewModels.Documents;
+using System.Windows;
 
 namespace GM.Commands.DocumentCommands;
 
@@ -24,9 +25,12 @@ public class LoadDocumentNamesCommand : AsyncCommandBase
 
             _viewModel.UpdateDocumentNames(_documentStore.Documents);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            MessageBox.Show($"{ex.Message}",
+                "Erreur de chargement des noms de documents",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

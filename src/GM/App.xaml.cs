@@ -6,10 +6,10 @@ using GM.ViewModels;
 using GM.Extensions;
 using System.Windows;
 using GM.Repositories;
+using GM.ViewModels.Documents;
 using Microsoft.Extensions.Hosting;
 using GM.Repositories.VehicleRepos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GM;
@@ -17,6 +17,7 @@ namespace GM;
 public partial class App : Application
 {
     private static IHost? _hosting;
+    private const string CONNECTION_STRING = "Host=localhost;Port=5432;Username=douak;Password=6772AlA@;Database=gestion_materiel";
 
     public static IHost Hosting => _hosting ??= CreateHostBuilder().Build();
 
@@ -27,8 +28,7 @@ public partial class App : Application
 
     private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
     {
-        string? connectionString = hostContext.Configuration.GetConnectionString("GMConnectionString");
-        services.AddSingleton<IGMDbContextFactory>(new GMDbContextFactory(connectionString));
+        services.AddSingleton<IGMDbContextFactory>(new GMDbContextFactory(CONNECTION_STRING));
 
         services.AddSingleton<NavigationStore>();
 
@@ -50,27 +50,39 @@ public partial class App : Application
         {
             DataContext = s.GetRequiredService<MainWindowViewModel>()
         });
-
     }
 
     protected override async void OnStartup(StartupEventArgs e)
     {
         var host = Hosting;
 
-        var dbContextFactory = host.Services.GetRequiredService<IGMDbContextFactory>();
-        using (GMDbContext dbContext = dbContextFactory.CreateDbContext())
+        try
         {
-            dbContext.Database.Migrate();
+            var dbContextFactory = host.Services.GetRequiredService<IGMDbContextFactory>();
+            using (GMDbContext dbContext = dbContextFactory.CreateDbContext())
+            {
+                dbContext.Database.Migrate();
+            }
+
+
+            var navigationService = host.Services.GetRequiredService<NavigationService<DocumentsViewModel>>();
+            navigationService.Navigate();
+
+            MainWindow = host.Services.GetRequiredService<MainWindow>();
+            MainWindow.Show();
+
+            base.OnStartup(e);
+            await host.StartAsync();
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"{ex.Message}!",
+                "Erreur de connexion à la base de données",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
 
-        var navigationService = host.Services.GetRequiredService<NavigationService<HomeViewModel>>();
-        navigationService.Navigate();
-
-        MainWindow = host.Services.GetRequiredService<MainWindow>();
-        MainWindow.Show();
-
-        base.OnStartup(e);
-        await host.StartAsync();
+            Current.Shutdown();
+        }
     }
 
     protected override async void OnExit(ExitEventArgs e)

@@ -20,22 +20,16 @@ public class DocumentInfoRepo(
                 .Include(x => x.Vehicle)
                 .Where(x => !x.IsArchived)
                 .Select(x => new DocumentInfoViewModel(
-                    new DocumentInfo(x.Document!.Name, x.DocumentNumber, x.IssuedDate, x.EndDate),
-                    new Vehicle(x.Vehicle!.Code, x.Vehicle.Designation, x.Vehicle.Brand, x.Vehicle.PlateNumber)))
+                    new DocumentInfo(
+                        x.Document!.Name,
+                        x.DocumentNumber,
+                        x.IssuedDate,
+                        x.EndDate),
+                    new Vehicle(x.Vehicle!.Code,
+                    x.Vehicle.Designation,
+                    x.Vehicle.Brand,
+                    x.Vehicle.PlateNumber)))
                 .ToListAsync();
-
-
-            //return await dbContext
-            //    .DocumentInfos
-            //    .Include(x => x.Document)
-            //    .Include(x => x.Vehicle)
-            //    .Where(x => !x.IsArchived)
-            //    .Select(x => new Models.DocumentInfo(
-            //        x.Document!.Name,
-            //        x.DocumentNumber,
-            //        x.IssuedDate,
-            //        x.EndDate))
-            //    .ToListAsync();
         }
     }
 

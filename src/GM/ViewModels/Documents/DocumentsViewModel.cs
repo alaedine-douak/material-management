@@ -1,9 +1,11 @@
-﻿using GM.Models;
-using GM.Stores;
+﻿using GM.Stores;
 using GM.Services;
 using GM.Commands;
 using GM.Commands.Document;
+
+using System.Windows.Data;
 using System.Windows.Input;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 namespace GM.ViewModels.Documents;
@@ -12,18 +14,20 @@ public class DocumentsViewModel : ViewModelBase
 {
     private readonly ObservableCollection<DocumentInfoViewModel> _documentInfos;
 
-    private bool _isLoading;
-    public bool IsLoading
+    public ICollectionView DocumentInfoCollectionView { get; }
+
+    private string _vehicleFilter = string.Empty;
+    public string VehicleFilter
     {
-        get => _isLoading;
-        set 
+        get => _vehicleFilter;
+        set
         {
-            _isLoading = value; 
-            OnPropertyChanged(nameof(IsLoading));
+            _vehicleFilter = value;
+            OnPropertyChanged(nameof(VehicleFilter));
+            DocumentInfoCollectionView.Refresh();
         }
     }
 
-    public IEnumerable<DocumentInfoViewModel> DocumentInfos => _documentInfos;
     public bool HasDocumentInfos => _documentInfos.Any();
 
     public ICommand LoadDocumentInfosCommand { get; }
@@ -37,6 +41,9 @@ public class DocumentsViewModel : ViewModelBase
         NavigationService<InsertDocumentInfoViewModel> insertDocumentInfoNavigationService)
     {
         _documentInfos = new ObservableCollection<DocumentInfoViewModel>();
+        DocumentInfoCollectionView = CollectionViewSource.GetDefaultView(_documentInfos);
+
+        DocumentInfoCollectionView.Filter = FilterDocumentByVehicle;
 
         LoadDocumentInfosCommand = new LoadDocumentInfosCommand(this, insertDocumentViewModel, vehicleStore, documentStore, documentInfoStore);
         InsertDocumentInfoCommand = new NavigateCommand<InsertDocumentInfoViewModel>(insertDocumentInfoNavigationService);
@@ -64,5 +71,20 @@ public class DocumentsViewModel : ViewModelBase
         {
             _documentInfos.Add(docInfo);
         }
+    }
+
+    private bool FilterDocumentByVehicle(object obj)
+    {
+        if (obj is DocumentInfoViewModel documentInfoVM)
+        {
+            return documentInfoVM.VehicleCode.Contains(
+                VehicleFilter, 
+                StringComparison.InvariantCultureIgnoreCase) ||
+                documentInfoVM.VehiclePlateNumber.Contains(
+                    VehicleFilter, 
+                    StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        return false;
     }
 }

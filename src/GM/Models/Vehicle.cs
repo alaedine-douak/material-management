@@ -8,7 +8,7 @@ public class Vehicle(
     string brand, 
     string plateNumber) : ViewModelBase
 {
-    public string? VehicleId { get; set; }
+    public string? VehicleId { get; set; } 
     public string Code { get; } = code;
     public string Designation { get; } = designation;
     public string Brand { get; } = brand;

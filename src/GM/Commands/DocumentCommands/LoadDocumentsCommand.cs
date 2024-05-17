@@ -1,5 +1,7 @@
-﻿using GM.Stores;
+﻿using GM.Services;
+using GM.Stores;
 using GM.ViewModels.Documents;
+using System.Windows;
 
 namespace GM.Commands.Document;
 
@@ -19,8 +21,6 @@ public class LoadDocumentInfosCommand(
 
     public override async Task ExecuteAsync(object? parameter)
     {
-        _documentsViewModel.IsLoading = true;
-
         try
         {
             await _documentInfoStore.Load();
@@ -28,17 +28,16 @@ public class LoadDocumentInfosCommand(
             await _vehicleStore.LoadVehicles();
             await _documentStore.LoadDocumentNames();
 
-
             _insertDocumentViewModel.UpdateDocumentNames(_documentStore.Documents);
             _documentsViewModel.UpdateDocumentInfos(_documentInfoStore.DocumentInfos);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
-        }
-        finally
-        {
-            _documentsViewModel.IsLoading = false;
+            MessageBox.Show(
+                $"{ex.Message}",
+                "Erreur de chargement des informations sur le document",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

@@ -36,7 +36,7 @@ public class InsertDocumentNameCommand : AsyncCommandBase
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(InsertDocumentInfoViewModel.DocumentName) ||
-            e.PropertyName == nameof(InsertDocumentInfoViewModel.AlartedDuration))
+            e.PropertyName == nameof(InsertDocumentInfoViewModel.AlartDuration))
         {
             OnCanExecutedChanged();
         }
@@ -45,7 +45,7 @@ public class InsertDocumentNameCommand : AsyncCommandBase
     public override bool CanExecute(object? parameter)
     {
         return !string.IsNullOrEmpty(_viewModel.DocumentName) && 
-            !string.IsNullOrEmpty(_viewModel.AlartedDuration) &&
+            !string.IsNullOrEmpty(_viewModel.AlartDuration) &&
             base.CanExecute(parameter);
     }
 
@@ -55,10 +55,10 @@ public class InsertDocumentNameCommand : AsyncCommandBase
         {
             var document = new Models.Document(
                 _viewModel.DocumentName.CapitalizeEachWord(), 
-                int.Parse(_viewModel.AlartedDuration));
+                int.Parse(_viewModel.AlartDuration));
 
             _viewModel.DocumentName = string.Empty;
-            _viewModel.AlartedDuration = string.Empty;
+            _viewModel.AlartDuration = string.Empty;
 
 
             var conflictingDocument = await _documentConflictValidation.GetConflictingDocument(document);
@@ -71,13 +71,13 @@ public class InsertDocumentNameCommand : AsyncCommandBase
 
             var user = await _userRepo.GetUser("gmadmin");
 
-            if (user is null) throw new Exception("There is no user");
+            if (user is null) throw new Exception("Il n'y a aucun utilisateur, confirmez auprès de l'administrateur de la base de données que l'utilisateur existe !");
 
             await _documentStore.InsertDocument(user!.Id, document);
 
             MessageBox.Show(
-                "Le nom du document a été ajouté avec succès",
-                "Success",
+                "Le nom du document a été inséré",
+                "Insérer un document",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -85,15 +85,15 @@ public class InsertDocumentNameCommand : AsyncCommandBase
         {
             MessageBox.Show(
                 "Ce nom de document existe déjà",
-                "Error",
+                "Erreur d'insertion du nom du document",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             MessageBox.Show(
-                "Quelque chose d'inattendu s'est produit lors de l'insertion du nom du document, réessayez plus tard ou contactez l'administrateur.",
-                "Error",
+                $"{ex.Message}",
+                "Erreur d'insertion du nom du document",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

@@ -15,10 +15,6 @@ public static class HostBuilderExtensions
     {
         hostBuilder.ConfigureServices(services =>
         {
-            services.AddTransient<HomeViewModel>();
-            services.AddSingleton<NavigationService<HomeViewModel>>();
-            services.AddSingleton<Func<HomeViewModel>>(s => () => s.GetRequiredService<HomeViewModel>());
-
             services.AddTransient(s => InitializeDocumentsListViewModel(s));
             services.AddSingleton<NavigationService<DocumentsViewModel>>();
             services.AddSingleton<Func<DocumentsViewModel>>(s => () => s.GetRequiredService<DocumentsViewModel>());
@@ -46,7 +42,6 @@ public static class HostBuilderExtensions
         => InsertDocumentInfoViewModel.LoadViewModel(
             service.GetRequiredService<IUserRepo>(),
             service.GetRequiredService<IDocumentRepo>(),
-            service.GetRequiredService<IDocumentInfoRepo>(),
             service.GetRequiredService<IDocumentConflictValidator>(),
             service.GetRequiredService<VehicleStore>(),
             service.GetRequiredService<DocumentStore>(),

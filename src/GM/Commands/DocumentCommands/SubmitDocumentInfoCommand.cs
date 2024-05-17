@@ -16,7 +16,6 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
 
     public SubmitDocumentInfoCommand(
         InsertDocumentInfoViewModel viewModel,
-        IDocumentInfoRepo documentInfoRepo,
         IDocumentRepo documentRepo,
         DocumentInfoStore documentInfoStore,
         NavigationService<DocumentsViewModel> navigationService)
@@ -61,24 +60,16 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
                 _viewModel.SelectedVehicle.Brand,
                 _viewModel.SelectedVehicle.PlateNumber));
 
-        //var documentInfo = new Models.DocumentInfo(
-        //    _viewModel.SelectedDocument?.Name!,
-        //    _viewModel.DocumentNumber!,
-        //    _viewModel.IssuedDate,
-        //    _viewModel.EndDate);
-
         try
         {
-
             var vehicleId = int.Parse(_viewModel.SelectedVehicle?.VehicleId!);
 
             var doc = await _documentRepo.GetDocumentByName(_viewModel.SelectedDocument?.Name!);
 
-            ///
             await _documentInfoStore.InsertDocumentInfo(doc!.Id, vehicleId, docInfoVM);
 
-            MessageBox.Show("Successfully insert document information",
-                "Insert document information",
+            MessageBox.Show("Les informations sur le document ont été insérées !",
+                "Insérer des informations sur le document",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
 
@@ -87,8 +78,8 @@ public class SubmitDocumentInfoCommand : AsyncCommandBase
         catch (Exception ex)
         {
             MessageBox.Show(
-                $"[Document Information Error]: {ex.Message}",
-                "Error",
+                $"{ex.Message}",
+                "Insérer des informations sur le document",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

@@ -4,6 +4,7 @@ using GM.Services;
 using GM.Repositories;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.ComponentModel;
 using GM.Commands.Documents;
 using GM.Commands.DocumentCommands;
 using System.Collections.ObjectModel;
@@ -66,14 +67,14 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         }
     }
 
-    private string _alartedDuration = string.Empty ;
-    public string AlartedDuration
+    private string _alartDuration = string.Empty ;
+    public string AlartDuration
     {
-        get => _alartedDuration;
+        get => _alartDuration;
         set
         {
-            _alartedDuration = value;
-            OnPropertyChanged(nameof(AlartedDuration));
+            _alartDuration = value;
+            OnPropertyChanged(nameof(AlartDuration));
         }
     }
     #endregion
@@ -105,6 +106,9 @@ public class InsertDocumentInfoViewModel : ViewModelBase
     }
 
     private string? _searchVehicleText;
+
+    //public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
     public string? SearchVehicleText
     {
         get => _searchVehicleText;
@@ -133,10 +137,11 @@ public class InsertDocumentInfoViewModel : ViewModelBase
     public ICommand LoadDocumentNamesCommand { get; }
     public ICommand InsertDocumentNameCommand { get; }
 
+    public bool HasErrors => throw new NotImplementedException();
+
     public InsertDocumentInfoViewModel(
         IUserRepo userRepo,
         IDocumentRepo documentRepo,
-        IDocumentInfoRepo documentInfoRepo,
         IDocumentConflictValidator documentConflictValidation,
         VehicleStore vehicleStore,
         DocumentStore documentStore,
@@ -149,7 +154,7 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         _docsObs = new ObservableCollection<Models.Document>();
         _vehiclesObs = new ObservableCollection<Models.Vehicle>();
 
-        SubmitCommand = new SubmitDocumentInfoCommand(this, documentInfoRepo, documentRepo, documentInfoStore, documentsViewNavigationService);
+        SubmitCommand = new SubmitDocumentInfoCommand(this, documentRepo, documentInfoStore, documentsViewNavigationService);
         CancelCommand = new NavigateCommand<DocumentsViewModel>(documentsViewNavigationService);
         LoadDocumentNamesCommand = new LoadDocumentNamesCommand(this, documentStore); 
         InsertDocumentNameCommand = new InsertDocumentNameCommand(this, userRepo, documentRepo, documentStore, documentConflictValidation);
@@ -170,7 +175,6 @@ public class InsertDocumentInfoViewModel : ViewModelBase
     public static InsertDocumentInfoViewModel LoadViewModel(
         IUserRepo userRepo,
         IDocumentRepo documentRepo,
-        IDocumentInfoRepo documentInfoRepo,
         IDocumentConflictValidator documentConflictValidation,
         VehicleStore vehicleStore,
         DocumentStore documentStore,
@@ -180,7 +184,6 @@ public class InsertDocumentInfoViewModel : ViewModelBase
         InsertDocumentInfoViewModel insertDocumentInfoViewModel = new(
             userRepo, 
             documentRepo, 
-            documentInfoRepo, 
             documentConflictValidation, 
             vehicleStore,
             documentStore, 

@@ -6,15 +6,24 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<ApplicationIcon>Resources\cosider-canalisation-logo.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Fonts\" />
-        <Folder Include="Converters\" />
-        <Folder Include="Views\DocumentInfo\" />
+      <None Remove="Images\cosider-canalisation-logo.png" />
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Resources\cosider-canalisation-logo.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Fonts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
         <PrivateAssets>all</PrivateAssets>
@@ -30,9 +39,9 @@
 		<Resource Include="Fonts\Roboto-Regular.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
-		<None Update="appsettings.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+		<Resource Include="Images\cosider-canalisation-logo.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
 	</ItemGroup>
 
 </Project>

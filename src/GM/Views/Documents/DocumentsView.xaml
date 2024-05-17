@@ -2,121 +2,152 @@
     x:Class="GM.Views.Documents.DocumentsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:GM.Views.Documents"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Background="White"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
+
+
+        <TextBlock
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            Padding="0,20,0,0"
+            HorizontalAlignment="Left"
+            FontSize="20"
+            FontWeight="SemiBold"
+            Foreground="#545454"
+            Text="Documents" />
+
+        <Button Command="{Binding InsertDocumentInfoCommand}" Style="{StaticResource AddButton}">
+            <StackPanel Orientation="Horizontal">
+                <Icon:PackIconMaterial
+                    Width="11"
+                    Height="11"
+                    Margin="0,1,8,0"
+                    VerticalAlignment="Center"
+                    Kind="Plus" />
+                <TextBlock Text="Insérer un document" />
+            </StackPanel>
+        </Button>
+
+        <TextBlock
+            Grid.Row="2"
+            Margin="0,0,280,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontSize="13"
+            FontWeight="SemiBold"
+            Text="Recherché par" />
+
+        <Grid
+            Grid.Row="2"
+            Width="270"
+            HorizontalAlignment="Right">
 
             <TextBlock
-                Grid.Column="0"
-                Padding="5,15"
-                FontSize="16"
-                FontWeight="Bold"
-                Text="liste de documents" />
-            <Button
-                Grid.Column="1"
-                Width="199"
-                Height="35"
-                Background="Transparent"
-                Command="{Binding InsertDocumentInfoCommand}"
-                Content="Insérer un nouveau document" />
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Panel.ZIndex="1"
+                Foreground="#b0b9c6"
+                IsHitTestVisible="False"
+                Text="Code de véhicule ou Immatriculation ..."
+                Visibility="{Binding ElementName=txtFilter, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibility}}" />
+            <TextBox
+                x:Name="txtFilter"
+                Width="270"
+                Style="{StaticResource Txtbox}"
+                Text="{Binding VehicleFilter, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding DocumentInfos}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Document Nº">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DocumentNo}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Nom du document">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DocumentName}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Date de délivrance">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DocumentIssuedDate, StringFormat=d}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Date d'expiration">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DocumentEndDate, StringFormat=d}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Jours restants">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RemainingDays, StringFormat={}{0:%d}}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Code du véhicule">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding VehicleCode, StringFormat={}{0:%d}}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Immatriculation de véhicule">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding VehiclePlateNumber, StringFormat={}{0:%d}}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Désignation">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding VehicleDesignation, StringFormat={}{0:%d}}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Marque">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding vehicleBrand, StringFormat={}{0:%d}}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid
+            Grid.Row="3"
+            CellStyle="{DynamicResource DataGridCellStyle}"
+            ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
+            ItemsSource="{Binding DocumentInfoCollectionView}"
+            RowStyle="{DynamicResource DataGridRowStyle}"
+            Style="{DynamicResource DataGridStyle}">
 
-        <!--<Grid Grid.Row="1">
-        <Grid.RowDefinitions>
-        <RowDefinition Height="35" />
-        <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding VehicleCode}"
+                    CanUserResize="False"
+                    Header="Code du véhicule"
+                    IsReadOnly="True" />
 
-        <TextBlock Grid.Row="0" Text="filtering + grouping" />
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding VehicleDesignation}"
+                    CanUserResize="False"
+                    Header="Désignation"
+                    IsReadOnly="True" />
 
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding vehicleBrand}"
+                    CanUserResize="False"
+                    Header="Marque"
+                    IsReadOnly="True" />
 
-        </Grid>-->
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding VehiclePlateNumber}"
+                    CanUserResize="False"
+                    Header="Immatriculation de véhicule"
+                    IsReadOnly="True" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding DocumentNo}"
+                    CanUserResize="False"
+                    Header="Numéro de document"
+                    IsReadOnly="True" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding DocumentName}"
+                    CanUserResize="False"
+                    Header="Nom du document"
+                    IsReadOnly="True" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding DocumentIssuedDate, StringFormat=d}"
+                    CanUserResize="False"
+                    Header="Date de délivrance"
+                    IsReadOnly="True" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding DocumentEndDate, StringFormat=d}"
+                    CanUserResize="False"
+                    Header="Date d'expiration"
+                    IsReadOnly="True" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding RemainingDays, StringFormat={}{0:%d}}"
+                    CanUserResize="False"
+                    Header="Jours restants"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
+    
 </UserControl>

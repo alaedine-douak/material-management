@@ -21,8 +21,8 @@ public class LoadVehiclesCommand(
         }
         catch(Exception ex)
         {
-            MessageBox.Show($"Loading Vehicles: {ex.Message}",
-                "Loading Vehicles Error",
+            MessageBox.Show($"{ex.Message}",
+                "Erreur de chargement du véhicule",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

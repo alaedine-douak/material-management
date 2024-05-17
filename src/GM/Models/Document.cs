@@ -1,6 +1,10 @@
-﻿namespace GM.Models;
+﻿using GM.ViewModels;
 
-public class Document(string name, int? alartDuration)
+namespace GM.Models;
+
+public class Document(
+    string name, 
+    int? alartDuration) : ViewModelBase
 {
     public string Name { get; } = name;
     public int? AlartDuration { get; } = alartDuration;

@@ -8,7 +8,7 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
 {
     private readonly IGMDbContextFactory _dbContextFactory = dbContextFactory;
 
-    public async Task InsertVehicle(int userId, Models.Vehicle vehicle)
+    public async Task<int> InsertVehicle(int userId, Models.Vehicle vehicle)
     {
         using(GMDbContext dbContext = _dbContextFactory.CreateDbContext())
         {
@@ -23,6 +23,8 @@ public class VehicleRepo(IGMDbContextFactory dbContextFactory) : IVehicleRepo
 
             dbContext.Vehicles.Add(newVehicle);
             await dbContext.SaveChangesAsync();
+
+            return newVehicle.Id;
         }
     }
 
